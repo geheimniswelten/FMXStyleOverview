@@ -1,0 +1,136 @@
+object FMXStyleOverviewForm: TFMXStyleOverviewForm
+  Left = 0
+  Top = 0
+  Caption = 'FMX-Style-Overview'
+  ClientHeight = 914
+  ClientWidth = 699
+  Position = ScreenCenter
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
+  OnShow = FormShow
+  DesignerMasterStyle = 0
+  object Grid: TGrid
+    Align = Client
+    CanFocus = True
+    ClipChildren = True
+    Size.Width = 699.000000000000000000
+    Size.Height = 816.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    RowCount = 0
+    Options = [ColumnResize, ColLines, RowLines, RowSelect, AlwaysShowSelection, Tabs, Header, AutoDisplacement]
+    OnDrawColumnHeader = GridDrawColumnHeader
+    OnSelectCell = GridSelectCell
+    OnDrawColumnCell = GridDrawColumnCell
+    OnGetValue = GridGetValue
+    Viewport.Width = 695.000000000000000000
+    Viewport.Height = 791.000000000000000000
+  end
+  object StyleBook: TStyleBook
+    Styles = <>
+    Left = 88
+    Top = 216
+  end
+  object CheckFixed: TCheckBox
+    CanFocus = False
+    Position.X = 32.000000000000000000
+    Position.Y = 57.000000000000000000
+    Size.Width = 137.000000000000000000
+    Size.Height = 43.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 4
+    TabStop = False
+    Text = '          FixedSize'#13#10'Show FixedHeight'#13#10'          FixedWidth'
+    OnChange = CheckFixedChange
+  end
+  object LayoutInfo: TLayout
+    Align = MostBottom
+    Position.Y = 824.000000000000000000
+    Size.Width = 699.000000000000000000
+    Size.Height = 90.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 6
+    object MemoDescription: TMemo
+      Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+      DataDetectorTypes = []
+      Lines.Strings = (
+        '1'
+        '2'
+        '3'
+        '4'
+        '5'
+        '6')
+      ReadOnly = True
+      StyledSettings = [Size, Style, FontColor]
+      TextSettings.Font.Family = 'Consolas'
+      Align = Client
+      Size.Width = 433.000000000000000000
+      Size.Height = 90.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      TabStop = False
+      Viewport.Width = 429.000000000000000000
+      Viewport.Height = 86.000000000000000000
+    end
+    object LayoutPreview: TLayout
+      Align = MostRight
+      ClipChildren = True
+      Margins.Left = 4.000000000000000000
+      Margins.Top = 4.000000000000000000
+      Margins.Right = 4.000000000000000000
+      Margins.Bottom = 4.000000000000000000
+      Position.X = 445.000000000000000000
+      Position.Y = 4.000000000000000000
+      Size.Width = 250.000000000000000000
+      Size.Height = 82.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      TabStop = False
+    end
+    object SplitterPreview: TSplitter
+      Align = Right
+      Cursor = crHSplit
+      MinSize = 200.000000000000000000
+      Position.X = 433.000000000000000000
+      Size.Width = 8.000000000000000000
+      Size.Height = 90.000000000000000000
+      Size.PlatformDefault = False
+    end
+  end
+  object SplitterInfo: TSplitter
+    Align = Bottom
+    Cursor = crVSplit
+    MinSize = 90.000000000000000000
+    Position.Y = 816.000000000000000000
+    Size.Width = 699.000000000000000000
+    Size.Height = 8.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object CheckBackground: TCheckBox
+    CanFocus = False
+    Position.X = 32.000000000000000000
+    Position.Y = 12.000000000000000000
+    Size.Width = 161.000000000000000000
+    Size.Height = 13.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 3
+    TabStop = False
+    Text = 'Show Background'
+    OnChange = CheckBackgroundChange
+  end
+  object CheckFullBackground: TCheckBox
+    CanFocus = False
+    IsChecked = True
+    Position.X = 32.000000000000000000
+    Position.Y = 32.000000000000000000
+    Size.Width = 161.000000000000000000
+    Size.Height = 13.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 2
+    TabStop = False
+    Text = 'Show FullBackground'
+    OnChange = CheckBackgroundChange
+  end
+end

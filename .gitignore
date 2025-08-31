@@ -1,0 +1,10 @@
+/__history
+/__recovery
+/Android
+/Win32
+/Win64
+*.~dsk
+*.dsk
+*.dsv
+*.dproj.local
+*.identcache
