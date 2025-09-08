@@ -4,7 +4,7 @@
         <ProjectVersion>20.3</ProjectVersion>
         <FrameworkType>FMX</FrameworkType>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Release</Config>
+        <Config Condition="'$(Config)'==''">Debug</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <ProjectName Condition="'$(ProjectName)'==''">FMXStyleOverview</ProjectName>
         <TargetedPlatforms>3</TargetedPlatforms>
@@ -189,7 +189,6 @@
         <VerInfo_Locale>1031</VerInfo_Locale>
         <DCC_RangeChecking>true</DCC_RangeChecking>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
-        <DCC_DebugDCUs>true</DCC_DebugDCUs>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
@@ -220,6 +219,11 @@
             <Form>FMXStyleOverviewForm</Form>
             <FormType>fmx</FormType>
         </DCCReference>
+        <DCCReference Include="FMXStyleOverviewDemo.pas">
+            <Form>FMXStyleDemoForm</Form>
+            <FormType>fmx</FormType>
+        </DCCReference>
+        <DCCReference Include="FMXStyleOverviewHelper.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

@@ -3,7 +3,7 @@ object FMXStyleOverviewForm: TFMXStyleOverviewForm
   Top = 0
   Caption = 'FMX-Style-Overview'
   ClientHeight = 914
-  ClientWidth = 699
+  ClientWidth = 926
   Position = ScreenCenter
   FormFactor.Width = 320
   FormFactor.Height = 480
@@ -11,126 +11,423 @@ object FMXStyleOverviewForm: TFMXStyleOverviewForm
   OnCreate = FormCreate
   OnShow = FormShow
   DesignerMasterStyle = 0
-  object Grid: TGrid
+  object DataGrid: TGrid
     Align = Client
     CanFocus = True
     ClipChildren = True
-    Size.Width = 699.000000000000000000
-    Size.Height = 816.000000000000000000
+    Size.Width = 926.000000000000000000
+    Size.Height = 704.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 0
     RowCount = 0
     Options = [ColumnResize, ColLines, RowLines, RowSelect, AlwaysShowSelection, Tabs, Header, AutoDisplacement]
-    OnDrawColumnHeader = GridDrawColumnHeader
-    OnSelectCell = GridSelectCell
-    OnDrawColumnCell = GridDrawColumnCell
-    OnGetValue = GridGetValue
-    Viewport.Width = 695.000000000000000000
-    Viewport.Height = 791.000000000000000000
+    OnDrawColumnHeader = DataGridDrawColumnHeader
+    OnSelectCell = DataGridSelectCell
+    OnDrawColumnCell = DataGridDrawColumnCell
+    OnGetValue = DataGridGetValue
+    Viewport.Width = 922.000000000000000000
+    Viewport.Height = 679.000000000000000000
   end
-  object StyleBook: TStyleBook
-    Styles = <>
-    Left = 88
-    Top = 216
-  end
-  object CheckFixed: TCheckBox
-    CanFocus = False
-    Position.X = 32.000000000000000000
-    Position.Y = 57.000000000000000000
-    Size.Width = 137.000000000000000000
-    Size.Height = 43.000000000000000000
-    Size.PlatformDefault = False
-    TabOrder = 4
-    TabStop = False
-    Text = '          FixedSize'#13#10'Show FixedHeight'#13#10'          FixedWidth'
-    OnChange = CheckFixedChange
+  object StylesList: TStyleBook
+    Styles = <
+      item
+      end>
+    Left = 256
+    Top = 48
   end
   object LayoutInfo: TLayout
     Align = MostBottom
-    Position.Y = 824.000000000000000000
-    Size.Width = 699.000000000000000000
-    Size.Height = 90.000000000000000000
+    Position.Y = 712.000000000000000000
+    Size.Width = 926.000000000000000000
+    Size.Height = 202.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 6
-    object MemoDescription: TMemo
-      Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
-      DataDetectorTypes = []
-      Lines.Strings = (
-        '1'
-        '2'
-        '3'
-        '4'
-        '5'
-        '6')
-      ReadOnly = True
-      StyledSettings = [Size, Style, FontColor]
-      TextSettings.Font.Family = 'Consolas'
-      Align = Client
-      Size.Width = 433.000000000000000000
-      Size.Height = 90.000000000000000000
+    TabOrder = 5
+    object LayoutPreview: TLayout
+      Align = Right
+      ClipChildren = True
+      Margins.Right = 4.000000000000000000
+      Margins.Bottom = 4.000000000000000000
+      Position.X = 437.000000000000000000
+      Size.Width = 455.000000000000000000
+      Size.Height = 198.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 0
       TabStop = False
-      Viewport.Width = 429.000000000000000000
-      Viewport.Height = 86.000000000000000000
-    end
-    object LayoutPreview: TLayout
-      Align = MostRight
-      ClipChildren = True
-      Margins.Left = 4.000000000000000000
-      Margins.Top = 4.000000000000000000
-      Margins.Right = 4.000000000000000000
-      Margins.Bottom = 4.000000000000000000
-      Position.X = 445.000000000000000000
-      Position.Y = 4.000000000000000000
-      Size.Width = 250.000000000000000000
-      Size.Height = 82.000000000000000000
-      Size.PlatformDefault = False
-      TabOrder = 1
-      TabStop = False
+      object MemoCode: TMemo
+        Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+        DataDetectorTypes = []
+        ReadOnly = True
+        Anchors = [akRight, akBottom]
+        DisableFocusEffect = True
+        Position.X = 222.000000000000000000
+        Position.Y = 93.000000000000000000
+        Size.Width = 217.000000000000000000
+        Size.Height = 89.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        Viewport.Width = 213.000000000000000000
+        Viewport.Height = 85.000000000000000000
+      end
     end
     object SplitterPreview: TSplitter
       Align = Right
       Cursor = crHSplit
       MinSize = 200.000000000000000000
-      Position.X = 433.000000000000000000
+      Position.X = 429.000000000000000000
       Size.Width = 8.000000000000000000
-      Size.Height = 90.000000000000000000
+      Size.Height = 202.000000000000000000
       Size.PlatformDefault = False
+    end
+    object LayoutLeft: TLayout
+      Align = Client
+      Size.Width = 429.000000000000000000
+      Size.Height = 202.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      object LayoutStyles: TLayout
+        Align = Client
+        ClipChildren = True
+        Size.Width = 261.000000000000000000
+        Size.Height = 202.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 1
+        object LayoutSearch: TLayout
+          Align = Top
+          Size.Width = 261.000000000000000000
+          Size.Height = 25.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 1
+          object EditSearch: TEdit
+            Touch.InteractiveGestures = [LongTap, DoubleTap]
+            TabOrder = 0
+            Position.X = 4.000000000000000000
+            Size.Width = 145.000000000000000000
+            Size.Height = 22.000000000000000000
+            Size.PlatformDefault = False
+            TextPrompt = 'Search'
+            OnChange = EditSearchChange
+            OnTyping = EditSearchChange
+            OnKeyDown = EditSearchKeyDown
+          end
+          object ButtonSearchDown: TButton
+            StyledSettings = [Style, FontColor]
+            Position.X = 152.000000000000000000
+            Size.Width = 25.000000000000000000
+            Size.Height = 22.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 2
+            Text = 'u'
+            TextSettings.Font.Family = 'Marlett'
+            TextSettings.Font.Size = 18.000000000000000000
+            TextSettings.Trimming = None
+            OnClick = EditSearchChange
+          end
+          object ButtonSearchUp: TButton
+            StyledSettings = [Style, FontColor]
+            Position.X = 180.000000000000000000
+            Size.Width = 25.000000000000000000
+            Size.Height = 22.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 1
+            Text = 't'
+            TextSettings.Font.Family = 'Marlett'
+            TextSettings.Font.Size = 18.000000000000000000
+            TextSettings.Trimming = None
+            OnClick = EditSearchChange
+          end
+          object Label1: TLabel
+            Position.X = 216.000000000000000000
+            Position.Y = 3.000000000000000000
+            Size.Width = 193.000000000000000000
+            Size.Height = 17.000000000000000000
+            Size.PlatformDefault = False
+            Text = '[Grid] Shift + Cursor = go to next'
+            TabOrder = 3
+          end
+        end
+        object MemoDescription: TMemo
+          Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+          DataDetectorTypes = []
+          Lines.Strings = (
+            'N'
+            'N'
+            ''
+            'S'
+            'T'
+            'A'
+            'A'
+            'A'
+            'I'
+            'S'
+            '')
+          ReadOnly = True
+          StyledSettings = [Size, Style, FontColor]
+          TextSettings.Font.Family = 'Consolas'
+          Align = Client
+          Size.Width = 261.000000000000000000
+          Size.Height = 177.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 0
+          TabStop = False
+          Viewport.Width = 257.000000000000000000
+          Viewport.Height = 173.000000000000000000
+        end
+      end
+      object ListPlatforms: TListBox
+        Align = Right
+        Margins.Left = 3.000000000000000000
+        Position.X = 264.000000000000000000
+        Size.Width = 165.000000000000000000
+        Size.Height = 202.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        DisableFocusEffect = True
+        Items.Strings = (
+          '[MSWINDOWS]'
+          '[MACOS]'
+          '[IOS]'
+          '[IOSALTERNATE]'
+          '[ANDROID]'
+          '[LIGHTSTYLE]'
+          '[DARKSTYLE]'
+          '[SMALLSTYLE]')
+        DefaultItemStyles.ItemStyle = ''
+        DefaultItemStyles.GroupHeaderStyle = ''
+        DefaultItemStyles.GroupFooterStyle = ''
+        ShowCheckboxes = True
+        Viewport.Width = 161.000000000000000000
+        Viewport.Height = 198.000000000000000000
+      end
+    end
+    object LayoutPrevTabs: TLayout
+      Align = MostRight
+      Margins.Right = 3.000000000000000000
+      Position.X = 896.000000000000000000
+      Size.Width = 27.000000000000000000
+      Size.Height = 202.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 2
+      OnResized = LayoutPrevTabsResized
+      object TabControlPreview: TTabControl
+        Align = Center
+        FullSize = True
+        RotationAngle = -90.000000000000000000
+        Size.Width = 152.000000000000000000
+        Size.Height = 27.000000000000000000
+        Size.PlatformDefault = False
+        TabIndex = 1
+        TabOrder = 0
+        TabPosition = Bottom
+        OnChange = CheckBackgroundChange
+        Sizes = (
+          152s
+          1.00000667572021s
+          152s
+          1.00000667572021s
+          152s
+          1.00000667572021s)
+        object TabItemCode: TTabItem
+          CustomIcon = <
+            item
+            end>
+          TextSettings.Trimming = None
+          IsSelected = False
+          Size.Width = 50.000000000000000000
+          Size.Height = 26.000000000000000000
+          Size.PlatformDefault = False
+          StyleLookup = ''
+          TabOrder = 0
+          Text = 'Code'
+          ExplicitSize.cx = 50.000000000000000000
+          ExplicitSize.cy = 26.000000000000000000
+        end
+        object TabItemTree: TTabItem
+          CustomIcon = <
+            item
+            end>
+          TextSettings.Trimming = None
+          IsSelected = True
+          Size.Width = 50.000000000000000000
+          Size.Height = 26.000000000000000000
+          Size.PlatformDefault = False
+          StyleLookup = ''
+          TabOrder = 0
+          Text = 'Tree'
+          ExplicitSize.cx = 50.000000000000000000
+          ExplicitSize.cy = 26.000000000000000000
+        end
+        object TabItemPreview: TTabItem
+          CustomIcon = <
+            item
+            end>
+          TextSettings.Trimming = None
+          IsSelected = False
+          Size.Width = 50.000000000000000000
+          Size.Height = 26.000000000000000000
+          Size.PlatformDefault = False
+          StyleLookup = ''
+          TabOrder = 0
+          Text = 'View'
+          ExplicitSize.cx = 50.000000000000000000
+          ExplicitSize.cy = 26.000000000000000000
+        end
+      end
     end
   end
   object SplitterInfo: TSplitter
     Align = Bottom
     Cursor = crVSplit
     MinSize = 90.000000000000000000
-    Position.Y = 816.000000000000000000
-    Size.Width = 699.000000000000000000
+    Position.Y = 704.000000000000000000
+    Size.Width = 926.000000000000000000
     Size.Height = 8.000000000000000000
     Size.PlatformDefault = False
   end
-  object CheckBackground: TCheckBox
-    CanFocus = False
-    Position.X = 32.000000000000000000
-    Position.Y = 12.000000000000000000
+  object ExpanderViewOptions: TExpander
+    Position.X = 24.000000000000000000
+    Position.Y = 22.000000000000000000
+    ShowCheck = False
     Size.Width = 161.000000000000000000
-    Size.Height = 13.000000000000000000
+    Size.Height = 249.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 3
-    TabStop = False
-    Text = 'Show Background'
-    OnChange = CheckBackgroundChange
+    Text = 'View-Options'
+    TabOrder = 8
+    OnMouseDown = ExpanderViewOptionsMouseDown
+    OnExpandedChanged = ExpanderViewOptionsExpandedChanged
+    ContentSize = '224'
+    object CheckBackground: TCheckBox
+      Position.X = 8.000000000000000000
+      Position.Y = 68.000000000000000000
+      Size.Width = 145.000000000000000000
+      Size.Height = 13.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 3
+      TabStop = False
+      Text = 'Show Background'
+      OnChange = CheckBackgroundChange
+    end
+    object CheckFullBackground: TCheckBox
+      IsChecked = True
+      Position.X = 8.000000000000000000
+      Position.Y = 88.000000000000000000
+      Size.Width = 145.000000000000000000
+      Size.Height = 13.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 2
+      TabStop = False
+      Text = 'Show FullBackground'
+      OnChange = CheckBackgroundChange
+    end
+    object CheckAsComponent: TCheckBox
+      Enabled = False
+      Position.X = 8.000000000000000000
+      Position.Y = 118.000000000000000000
+      Size.Width = 145.000000000000000000
+      Size.Height = 19.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 4
+      Text = 'Show as Component'
+      OnChange = CheckAsComponentChange
+    end
+    object ButtonLoad: TButton
+      PopupMenu = PopupLoad
+      Position.X = 8.000000000000000000
+      Position.Y = 8.000000000000000000
+      Size.Width = 65.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 6
+      Text = 'Load'
+      TextSettings.Trimming = None
+      OnClick = ButtonLoadSaveClick
+    end
+    object ButtonSave: TButton
+      PopupMenu = PopupSave
+      Position.X = 8.000000000000000000
+      Position.Y = 34.000000000000000000
+      Size.Width = 65.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 5
+      Text = 'Save'
+      TextSettings.Trimming = None
+      OnClick = ButtonLoadSaveClick
+    end
+    object DropTarget1: TDropTarget
+      Position.X = 88.000000000000000000
+      Scale.X = 0.550000011920929000
+      Scale.Y = 0.550000011920929000
+      Size.Width = 113.000000000000000000
+      Size.Height = 110.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 7
+      Text = 'Drag && Drop'
+      OnDragOver = DropTarget1DragOver
+      OnDropped = DropTarget1Dropped
+    end
   end
-  object CheckFullBackground: TCheckBox
-    CanFocus = False
-    IsChecked = True
+  object CheckFixed: TCheckBox
     Position.X = 32.000000000000000000
-    Position.Y = 32.000000000000000000
-    Size.Width = 161.000000000000000000
-    Size.Height = 13.000000000000000000
+    Position.Y = 219.000000000000000000
+    Size.Width = 137.000000000000000000
+    Size.Height = 43.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 2
     TabStop = False
-    Text = 'Show FullBackground'
-    OnChange = CheckBackgroundChange
+    Text = '          FixedSize'#13#10'Show FixedHeight'#13#10'          FixedWidth'
+    OnChange = CheckFixedChange
+  end
+  object CheckDemoForm: TCheckBox
+    Position.X = 32.000000000000000000
+    Position.Y = 186.000000000000000000
+    Size.Width = 145.000000000000000000
+    Size.Height = 19.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 4
+    Text = 'Show DemoForm'
+    OnChange = CheckDemoFormChange
+  end
+  object PopupLoad: TPopupMenu
+    Left = 256
+    Top = 120
+    object MenuLoadFolder: TMenuItem
+      Locked = True
+      Text = 'Load Folder'
+      OnClick = MenuLoadClick
+    end
+    object MenuLoadFile: TMenuItem
+      Text = 'Open Files'
+      OnClick = MenuLoadClick
+    end
+  end
+  object PopupSave: TPopupMenu
+    Left = 256
+    Top = 192
+    object MenuItemSave: TMenuItem
+      Text = 'Save Selected'
+      OnClick = MenuItemSaveClick
+    end
+  end
+  object SaveDialog: TSaveDialog
+    DefaultExt = '.style'
+    Filter = 'Style|*.style|FMX-Style|*.fsf'
+    Options = [ofOverwritePrompt, ofHideReadOnly, ofNoTestFileCreate, ofEnableSizing, ofDontAddToRecent]
+    Left = 352
+    Top = 192
+  end
+  object OpenDialog: TOpenDialog
+    Filter = 
+      'Styles|*.style;*.fsf|Style|*.style|FMX-Style|*.fsf|Resource File' +
+      's|*.res|PE Files|*.exe;*.dll;*.bpl'
+    Options = [ofHideReadOnly, ofAllowMultiSelect, ofEnableSizing, ofDontAddToRecent]
+    Left = 352
+    Top = 120
+  end
+  object TimerGridHeaderHeightBugfix: TTimer
+    Enabled = False
+    Interval = 100
+    OnTimer = TimerGridHeaderHeightBugfixTimer
+    Left = 256
+    Top = 264
   end
 end
