@@ -3,9 +3,9 @@ program FMXStyleOverview;
 uses
   System.StartUpCopy,
   FMX.Forms,
+  FMXStyleOverviewHelper in 'FMXStyleOverviewHelper.pas',
   FMXStyleOverviewMain in 'FMXStyleOverviewMain.pas' {FMXStyleOverviewForm},
-  FMXStyleOverviewDemo in 'FMXStyleOverviewDemo.pas' {FMXStyleDemoForm},
-  FMXStyleOverviewHelper in 'FMXStyleOverviewHelper.pas';
+  FMXStyleOverviewDemo in 'FMXStyleOverviewDemo.pas' {FMXStyleDemoForm};
 
 {$R *.res}
 

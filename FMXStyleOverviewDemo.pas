@@ -5,13 +5,12 @@ interface
 uses
   Winapi.Windows,
   System.SysUtils, System.StrUtils, System.Types, System.UITypes, System.Classes, System.Variants,
-  System.UIConsts, System.ImageList, System.TypInfo,
+  System.UIConsts, System.ImageList, System.TypInfo, System.Skia, System.Rtti, System.Math.Vectors,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.ImgList, FMX.Menus, FMX.StdCtrls,
-  FMX.Controls.Presentation, FMX.Memo.Types, System.Skia, System.Rtti, FMX.Grid.Style, FMX.Effects,
+  FMX.Controls.Presentation, FMX.Memo.Types, FMX.Grid.Style, FMX.Effects, FMX.Ani, FMX.Objects,
   FMX.Colors, FMX.TabControl, FMX.Grid, FMX.Skia, FMX.MagnifierGlass, FMX.ExtCtrls, FMX.ComboTrackBar,
   FMX.ComboEdit, FMX.SpinBox, FMX.Edit, FMX.EditBox, FMX.NumberBox, FMX.DateTimeCtrls, FMX.Calendar,
-  FMX.TreeView, FMX.ScrollBox, FMX.Memo, FMX.ListBox, FMX.Layouts, System.Math.Vectors, FMX.Controls3D,
-  FMX.Layers3D, FMX.Objects, FMX.Ani;
+  FMX.TreeView, FMX.ScrollBox, FMX.Memo, FMX.ListBox, FMX.Layouts, FMX.Controls3D, FMX.Layers3D;
 
 type
   TFMXStyleDemoForm = class(TForm)
@@ -126,7 +125,7 @@ type
     Button14: TButton;
     Button15: TButton;
     Button16: TButton;
-    StyleBook1: TStyleBook;
+    StyleBookDemo: TStyleBook;
     ControlHintPanel: TCalloutRectangle;
     ControlHintAnimation: TFloatAnimation;
     ControlHintLabel: TLabel;
@@ -202,8 +201,8 @@ type
     procedure DropTarget1DragDrop(Sender: TObject; const Data: TDragObject; const Point: TPointF);
     procedure CheckToolButtonBordersChange(Sender: TObject);
   private
-    FEnableEvent: Boolean;
-    FBorderedTB:  TArray<TButton>;
+    FEnableChangeEvents:  Boolean;
+    FBorderedToolButtons: TArray<TButton>;
     procedure ButtonClickNotifier(Sender: TObject);
   end;
 
@@ -238,9 +237,9 @@ end;
 
 procedure TFMXStyleDemoForm.CheckBox1Change(Sender: TObject);
 begin
-  if not FEnableEvent then
+  if not FEnableChangeEvents then
     Exit;
-  FEnableEvent := False;
+  FEnableChangeEvents := False;
   try
     var Value := CheckBox1.IsChecked;
     if Sender = Button6 then
@@ -252,22 +251,22 @@ begin
     Button6.IsPressed   := Value;  // TCustomButton   FIsPressed
     Switch1.IsChecked   := Value;  // TCustomSwitch   Model.Value
   finally
-    FEnableEvent := True;
+    FEnableChangeEvents := True;
   end;
 end;
 
 procedure TFMXStyleDemoForm.CheckBox2Change(Sender: TObject);
 begin
-  if not FEnableEvent then
+  if not FEnableChangeEvents then
     Exit;
-  FEnableEvent := False;
+  FEnableChangeEvents := False;
   try
     var Value := TCheckBox(Sender).IsChecked;
 
     CheckBox2.IsChecked   := Value;  // TCheckBox   FIsChecked
     CheckBox3.IsChecked := Value;  // TCheckBox   FIsChecked
   finally
-    FEnableEvent := True;
+    FEnableChangeEvents := True;
   end;
 end;
 
@@ -278,14 +277,14 @@ end;
 
 procedure TFMXStyleDemoForm.CheckToolButtonBordersChange(Sender: TObject);
 begin
-  if not Assigned(FBorderedTB) then
+  if not Assigned(FBorderedToolButtons) then
     for var idx := GroupToolButtons.ControlsCount - 1 downto 0 do
       if GroupToolButtons.Controls[idx] is TButton then begin
         var Button := TButton(GroupToolButtons.Controls[idx]);
         if EndsText('bordered', Button.StyleLookup) then
-          Insert(Button, FBorderedTB, 0);
+          Insert(Button, FBorderedToolButtons, 0);
       end;
-  for var Button in FBorderedTB do
+  for var Button in FBorderedToolButtons do
     if CheckToolButtonBorders.IsChecked then
       Button.StyleLookup := Button.StyleLookup + 'bordered'
     else
@@ -294,9 +293,9 @@ end;
 
 procedure TFMXStyleDemoForm.ColorPicker1Click(Sender: TObject);
 begin
-  if not FEnableEvent then
+  if not FEnableChangeEvents then
     Exit;
-  FEnableEvent := False;
+  FEnableChangeEvents := False;
   try
     var Value:   TColor := 0;
     var H, S, L: Single;
@@ -363,15 +362,15 @@ begin
     except
     end;
   finally
-    FEnableEvent := True;
+    FEnableChangeEvents := True;
   end;
 end;
 
 procedure TFMXStyleDemoForm.DateEdit1Change(Sender: TObject);
 begin
-  if not FEnableEvent then
+  if not FEnableChangeEvents then
     Exit;
-  FEnableEvent := False;
+  FEnableChangeEvents := False;
   try
     var Value := DateEdit1.Date;
     if Sender = Calendar1 then
@@ -379,7 +378,7 @@ begin
     DateEdit1.Date := Value;  // TCustomDateTimeEdit   FDTFormatter.DateTime
     Calendar1.Date := Value;  // TCustomCalendar       Model.DateTime
   finally
-    FEnableEvent := True;
+    FEnableChangeEvents := True;
   end;
 end;
 
@@ -427,21 +426,25 @@ begin
             + #10#10'Data:'#10 + Data.Data.AsString;
   if Assigned(Data.Source) then
     Text := 'Source: ' + Data.Source.ClassName + #10 + Text;
-  ShowMessage(Text);
+
+  TThread.ForceQueue(nil, procedure  // sonst geht das DropImage nicht weg
+    begin
+      ShowMessage(Text);
+    end);
 end;
 
 procedure TFMXStyleDemoForm.Edit1Change(Sender: TObject);
 begin
-  if not FEnableEvent then
+  if not FEnableChangeEvents then
     Exit;
-  FEnableEvent := False;
+  FEnableChangeEvents := False;
   try
     var Value := (Sender as TEdit).Text;
     Edit1.Text      := Value;  // TCustomEdit   Model.Text
     ComboEdit1.Text := Value;  // TCustomEdit   Model.Text
     ComboBox1.ItemIndex := ComboBox1.Items.IndexOf(Value);
   finally
-    FEnableEvent := True;
+    FEnableChangeEvents := True;
   end;
 end;
 
@@ -502,7 +505,7 @@ begin
       end;
     end;
 
-  FEnableEvent := True;  // ab jetzt alle Change-Events aktiviert
+  FEnableChangeEvents := True;  // ab jetzt alle Change-Events aktiviert
 end;
 
 procedure TFMXStyleDemoForm.FormMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Single);
@@ -532,16 +535,16 @@ end;
 
 procedure TFMXStyleDemoForm.NumberBox1Change(Sender: TObject);
 begin
-  if not FEnableEvent then
+  if not FEnableChangeEvents then
     Exit;
-  FEnableEvent := False;
+  FEnableChangeEvents := False;
   try
     var Value := (Sender as TCustomEditBox).Value;
     NumberBox1.Value     := Value;  // TCustomEditBox   Model.Value
     SpinBox1.Value       := Value;  // TCustomEditBox   Model.Value
     ComboTrackBar1.Value := Value;  // TCustomEditBox   Model.Value
   finally
-    FEnableEvent := True;
+    FEnableChangeEvents := True;
   end;
 end;
 
@@ -552,9 +555,9 @@ end;
 
 procedure TFMXStyleDemoForm.TrackBar1Change(Sender: TObject);
 begin
-  if not FEnableEvent then
+  if not FEnableChangeEvents then
     Exit;
-  FEnableEvent := False;
+  FEnableChangeEvents := False;
   try
     var Value := 0.0;
     case IndexText((Sender as TControl).Name, [ArcDial1.Name, TrackBar1.Name, ScrollBar1.Name, SmallScrollBar1.Name]) of
@@ -571,7 +574,7 @@ begin
     ScrollBar1.Value      := Value;  // TScrollBar     FValueRange.Value
     ProgressBar1.Value    := Value;  // TProgressBar   FValueRange.Value
   finally
-    FEnableEvent := True;
+    FEnableChangeEvents := True;
   end;
 end;
 

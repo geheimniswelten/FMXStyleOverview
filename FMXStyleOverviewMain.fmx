@@ -321,7 +321,7 @@ object FMXStyleOverviewForm: TFMXStyleOverviewForm
     object CheckAsComponent: TCheckBox
       Enabled = False
       Position.X = 8.000000000000000000
-      Position.Y = 118.000000000000000000
+      Position.Y = 105.000000000000000000
       Size.Width = 145.000000000000000000
       Size.Height = 19.000000000000000000
       Size.PlatformDefault = False
@@ -379,7 +379,7 @@ object FMXStyleOverviewForm: TFMXStyleOverviewForm
   end
   object CheckDemoForm: TCheckBox
     Position.X = 32.000000000000000000
-    Position.Y = 186.000000000000000000
+    Position.Y = 184.000000000000000000
     Size.Width = 145.000000000000000000
     Size.Height = 19.000000000000000000
     Size.PlatformDefault = False
@@ -429,5 +429,236 @@ object FMXStyleOverviewForm: TFMXStyleOverviewForm
     OnTimer = TimerGridHeaderHeightBugfixTimer
     Left = 256
     Top = 264
+  end
+  object ImagesOS: TImageList
+    Source = <
+      item
+        MultiResBitmap = <
+          item
+            Width = 18
+            Height = 18
+            PNG = {
+              89504E470D0A1A0A0000000D494844520000001200000012080600000056CE8E
+              570000000473424954080808087C0864880000002B49444154388D6360186C80
+              11C6B0ABDCF81F97A243EDFE8C84E499A8E5A25183E80846A37F281A348C0100
+              F2AB1017B277CADE0000000049454E44AE426082}
+          end>
+        Name = 'OSWinLight'
+      end
+      item
+        MultiResBitmap = <
+          item
+            Width = 18
+            Height = 18
+            PNG = {
+              89504E470D0A1A0A0000000D494844520000001200000012080600000056CE8E
+              570000000473424954080808087C0864880000003849444154388D63B4ABDCF8
+              9F810A80891A863030303030D8556EFC4FC855C4C853CD45A30611068CD44A47
+              A3D13F140DA25AF40F3EAF0100BBA81A8B617F58C30000000049454E44AE4260
+              82}
+          end>
+        Name = 'OSWinDark'
+      end
+      item
+        MultiResBitmap = <
+          item
+            Width = 18
+            Height = 18
+            PNG = {
+              89504E470D0A1A0A0000000D494844520000001200000012080600000056CE8E
+              570000000473424954080808087C0864880000005949444154388D6360A01260
+              8431EC2A37FE27C78043EDFE8C7083C83504DD308A0C82E965A2C425C860D4A0
+              A168100B8C4169A224E8A243EDFE8CF0948B075037AFE102E886E373194E095C
+              2EC46518564142DE2426CCC8060044232282049D0F8F0000000049454E44AE42
+              6082}
+          end>
+        Name = 'OSMacLight'
+      end
+      item
+        MultiResBitmap = <
+          item
+            Width = 18
+            Height = 18
+            PNG = {
+              89504E470D0A1A0A0000000D494844520000001200000012080600000056CE8E
+              570000000473424954080808087C0864880000006349444154388D63B4ABDCF8
+              9F810A8005C638D4EECF488E01708750C34576951BFFB32073C83104E613264A
+              5D0303A3060D4583284ED93040D04576951BFF13935819618A28CD6B8CF86C43
+              371C9F5A9C5EC3E6427CAEC66A103E0DB8E4F07A8D1400004D832B5A0C04D173
+              0000000049454E44AE426082}
+          end>
+        Name = 'OSMacDark'
+      end
+      item
+        MultiResBitmap = <
+          item
+            Width = 18
+            Height = 18
+            PNG = {
+              89504E470D0A1A0A0000000D494844520000001200000012080600000056CE8E
+              570000000473424954080808087C0864880000004849444154388D6360A01260
+              4417B0ABDCF89F90A643EDFE18FA50048831049F61241B844D1D13B12E200446
+              0D1A35881A80055D80946C820C08BA086F9E22C5206201D58A11AA0100753314
+              EC15EABBBF0000000049454E44AE426082}
+          end>
+        Name = 'OSiOSLight'
+      end
+      item
+        MultiResBitmap = <
+          item
+            Width = 18
+            Height = 18
+            PNG = {
+              89504E470D0A1A0A0000000D494844520000001200000012080600000056CE8E
+              570000000473424954080808087C0864880000004C49444154388D63B4ABDCF8
+              9F810A80055DE050BB3F23214DD82C6722D5105CEA305C448C57B119C4844D21
+              3960D4A05183A801C8CA6BD8004117115B3A50CD6B8CE836925B8C6018442E00
+              0087001A8F27C62BAE0000000049454E44AE426082}
+          end>
+        Name = 'OSiOSDark'
+      end
+      item
+        MultiResBitmap = <
+          item
+            Width = 18
+            Height = 18
+            PNG = {
+              89504E470D0A1A0A0000000D494844520000001200000012080600000056CE8E
+              570000000473424954080808087C0864880000005749444154388D6360A01260
+              C4276957B9F13F32FF50BB3F4EF53825D00D216418133E439035C1D8B82CC06A
+              3A2EC5845C4515003719D93BC4B808DDFB58C3881C306A106140B57444B52C82
+              17201B46C895832FB0A90600D24C2CE5BEDA3A500000000049454E44AE426082}
+          end>
+        Name = 'OSAndLight'
+      end
+      item
+        MultiResBitmap = <
+          item
+            Width = 18
+            Height = 18
+            PNG = {
+              89504E470D0A1A0A0000000D494844520000001200000012080600000056CE8E
+              570000000473424954080808087C0864880000006F49444154388D63B4ABDCF8
+              9F810A80059FE4A1767F46643E3E4B9988350497185E83601A905D0063E3320C
+              A78BD035E1730D0303030323B5029BC1AE72E37F6C5E20A4075D3F5EAF910246
+              0D220CE05984D46480AE1EAB8BF0198A4B0EA7D7601A90D31959999654403583
+              A896D700146E3B5F43F05E740000000049454E44AE426082}
+          end>
+        Name = 'OSAndDark'
+      end
+      item
+        MultiResBitmap = <
+          item
+            Width = 18
+            Height = 18
+            PNG = {
+              89504E470D0A1A0A0000000D494844520000001200000012080600000056CE8E
+              570000000473424954080808087C0864880000007549444154388D6360A01260
+              2446915DE5C6FF30F6A1767FAC7A18D115A28343EDFE8CE8F2D80C6322C645E8
+              0660B3982483F0B99C851497E003441984CD25C86177A8DD9F9124AF11741131
+              4E27CA2042D14F8C4154F31A75C3885C80EC6DB25C44761639D4EECF08D34C8D
+              18C61BBB540B6CAA010089232C2488419BA30000000049454E44AE426082}
+          end>
+        Name = 'OSMixLight'
+      end
+      item
+        MultiResBitmap = <
+          item
+            Width = 18
+            Height = 18
+            PNG = {
+              89504E470D0A1A0A0000000D494844520000001200000012080600000056CE8E
+              570000000473424954080808087C0864880000007849444154388D63B4ABDCF8
+              9F810A8085184587DAFD19616C5C16B3A02B4407E81A0FB5FB3362338C891817
+              A11B8ACD62920CC2E772A2C288A80821A408973CB2B85DE5C6FF24790D1F6021
+              C655441B444AF4E30254F31A75C3885C80EC6DB25C447616B1ABDCF81FA6196F
+              A6A546F4532DB0B11609E40000D837376AC0DFCB210000000049454E44AE4260
+              82}
+          end>
+        Name = 'OSMixDark'
+      end>
+    Destination = <
+      item
+        Layers = <
+          item
+            Name = 'OSWinLight'
+            SourceRect.Right = 18.000000000000000000
+            SourceRect.Bottom = 18.000000000000000000
+          end>
+      end
+      item
+        Layers = <
+          item
+            Name = 'OSWinDark'
+            SourceRect.Right = 18.000000000000000000
+            SourceRect.Bottom = 18.000000000000000000
+          end>
+      end
+      item
+        Layers = <
+          item
+            Name = 'OSMacLight'
+            SourceRect.Right = 18.000000000000000000
+            SourceRect.Bottom = 18.000000000000000000
+          end>
+      end
+      item
+        Layers = <
+          item
+            Name = 'OSMacDark'
+            SourceRect.Right = 18.000000000000000000
+            SourceRect.Bottom = 18.000000000000000000
+          end>
+      end
+      item
+        Layers = <
+          item
+            Name = 'OSiOSLight'
+            SourceRect.Right = 18.000000000000000000
+            SourceRect.Bottom = 18.000000000000000000
+          end>
+      end
+      item
+        Layers = <
+          item
+            Name = 'OSiOSDark'
+            SourceRect.Right = 18.000000000000000000
+            SourceRect.Bottom = 18.000000000000000000
+          end>
+      end
+      item
+        Layers = <
+          item
+            Name = 'OSAndLight'
+            SourceRect.Right = 18.000000000000000000
+            SourceRect.Bottom = 18.000000000000000000
+          end>
+      end
+      item
+        Layers = <
+          item
+            Name = 'OSAndDark'
+            SourceRect.Right = 18.000000000000000000
+            SourceRect.Bottom = 18.000000000000000000
+          end>
+      end
+      item
+        Layers = <
+          item
+            Name = 'OSMixLight'
+            SourceRect.Right = 18.000000000000000000
+            SourceRect.Bottom = 18.000000000000000000
+          end>
+      end
+      item
+        Layers = <
+          item
+            Name = 'OSMixDark'
+            SourceRect.Right = 18.000000000000000000
+            SourceRect.Bottom = 18.000000000000000000
+          end>
+      end>
+    Left = 352
+    Top = 48
   end
 end

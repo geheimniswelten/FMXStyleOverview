@@ -8,18 +8,18 @@ unit FMXStyleOverviewMain;
 interface
 
 uses
-  Winapi.Windows, VCL.Dialogs,
-  //
+  {Winapi.Windows,} VCL.Dialogs,
+  (*
   // Default-Styles importieren (aber ist eventuell nicht alles installiert und sowieso nicht im Suchpfad für Platform "Windows")
   // Daher siehe nachfolgend {$R ***.res}
-  //FMX.Controls.Win, FMX.Controls.Mac, FMX.Controls.iOS, FMX.Controls.Android,
-  //
-  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Grid.Style, FMX.StdCtrls,
-  FMX.Layouts, FMX.Controls.Presentation, FMX.ScrollBox, FMX.Grid, FMX.Header, FMX.Styles,
+  FMX.Controls.Win, FMX.Controls.Mac, FMX.Controls.iOS, FMX.Controls.Android,
+  *)
+  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Grid.Style, FMX.StdCtrls, FMX.ImgList,
+  FMX.Layouts, FMX.Controls.Presentation, FMX.ScrollBox, FMX.Grid, FMX.Header, FMX.Styles, FMX.Ani,
   FMX.Objects, FMX.Platform.Win, FMX.Memo.Types, FMX.Memo, FMX.Edit, FMX.TabControl, FMX.Menus, FMX.ExtCtrls,
   FMX.ListView.Types, FMX.ListView.Appearances, FMX.ListView.Adapters.Base, FMX.ListView, FMX.ListBox,
   //
-  System.Types, System.UITypes, System.SysUtils, System.StrUtils, System.IOUtils,
+  System.Types, System.UITypes, System.SysUtils, System.StrUtils, System.IOUtils, System.ImageList,
   System.Classes, System.Variants, System.Rtti, System.Math, System.Math.Vectors,
   //
   FMXStyleOverviewDemo, FMXStyleOverviewHelper;
@@ -72,6 +72,7 @@ type
     OpenDialog: TOpenDialog;
     TimerGridHeaderHeightBugfix: TTimer;
     Label1: TLabel;
+    ImagesOS: TImageList;
     {$ENDREGION}
     {$REGION 'Events'}
     procedure FormCreate(Sender: TObject);
@@ -104,6 +105,7 @@ type
       System:   TArray<string>;       // Platform
       Images:   TArray<string>;       // TImage im Rootpfad des Style
       Descr:    string;
+      SysImage: Integer;              // Platform-HeaderImage
       FileData: TBytes;
       //Found:  TArray<Boolean>;      // see FStyleFound
       //Fixed:  TArray<TAdjustType>;  // see FStyleFixed (FixedSize/FixedWidth/FixedHeight)
@@ -138,10 +140,10 @@ implementation
 
 {$R *.fmx}
 
-{.$R FMX.Controls.Win.res}     // C:\Program Files (x86)\Embarcadero\Studio\23.0\lib\win32\release
-{$R FMX.Controls.Mac.res}      // C:\Program Files (x86)\Embarcadero\Studio\23.0\lib\osxarm64\release
-{$R FMX.Controls.iOS.res}      // C:\Program Files (x86)\Embarcadero\Studio\23.0\lib\iossimarm64\release
-{$R FMX.Controls.Android.res}  // C:\Program Files (x86)\Embarcadero\Studio\23.0\lib\android\release
+{.$R Resources\FMX.Controls.Win.res}     // C:\Program Files (x86)\Embarcadero\Studio\23.0\lib\win32\release
+{$R Resources\FMX.Controls.Mac.res}      // C:\Program Files (x86)\Embarcadero\Studio\23.0\lib\osxarm64\release
+{$R Resources\FMX.Controls.iOS.res}      // C:\Program Files (x86)\Embarcadero\Studio\23.0\lib\iossimarm64\release
+{$R Resources\FMX.Controls.Android.res}  // C:\Program Files (x86)\Embarcadero\Studio\23.0\lib\android\release
 
 (*
 const
@@ -165,7 +167,7 @@ type
 
 procedure TFMXStyleOverviewForm.AddPlatformNames(PlatformTarget: string; var Platforms: TArray<string>);
 begin
-  Platforms := PlatformTarget.Trim.Replace(',', '').Replace('][', ']*[').Split(['*']);
+  Platforms := PlatformTarget.Trim.ToUpper.Replace(',', '').Replace('][', ']*[').Split(['*']);
 
   // add to list
   for var P in Platforms do
@@ -322,12 +324,15 @@ begin
       FMXStyleDemoForm.StyleBook := nil;
       FMXStyleDemoForm.StyleName := '';
       FMXStyleDemoForm.Tag       := -1;
+      {CheckSynchronize;}Application.ProcessMessages;  // Einiges läuft verzögert, z.B. in TStyledControl.KillResourceLink via ForceQueue
       for var idx := High(FDemoSizes) downto 0 do
         if FMXStyleDemoForm.Components[idx] is TControl then begin
-          (FMXStyleDemoForm.Components[idx] as TControl).FixedSize  := TSize.Create(0, 0);
-          (FMXStyleDemoForm.Components[idx] as TControl).Width      := FDemoSizes[idx].Width + 10;  // kurz ändern, damit die innere Darstellungsgröße neu berechnet wird, oder so?
-          (FMXStyleDemoForm.Components[idx] as TControl).Width      := FDemoSizes[idx].Width - 10;  // kurz ändern, damit die innere Darstellungsgröße neu berechnet wird, oder so?
-          (FMXStyleDemoForm.Components[idx] as TControl).BoundsRect := FDemoSizes[idx];
+          var Control := TControl(FMXStyleDemoForm.Components[idx]);
+          Control.FixedSize  := TSize.Create(0, 0);
+          Control.Width      := FDemoSizes[idx].Width + 10;  // kurz ändern, damit die innere Darstellungsgröße neu berechnet wird, oder so?
+          Control.Width      := FDemoSizes[idx].Width - 10;  // kurz ändern, damit die innere Darstellungsgröße neu berechnet wird, oder so?
+          Control.BoundsRect := FDemoSizes[idx];
+          Control.InvalidateRect(Control.BoundsRect);
         end;
 
       if (DataGrid.ColumnIndex > 0) and (DataGrid.ColumnIndex < StylesList.Styles.Count) then begin
@@ -335,31 +340,15 @@ begin
         //FMXStyleDemoForm.StyleName := StylesList.Styles[DataGrid.ColumnIndex].Platform;
         //FMXStyleDemoForm.StyleBook := StylesList;
         FMXStyleDemoForm.StyleBook := nil;
-        FMXStyleDemoForm.StyleBook1.Styles.Clear;
-        var StyleItem  := FMXStyleDemoForm.StyleBook1.Styles.Add;
+        FMXStyleDemoForm.StyleBookDemo.Styles.Clear;
+        CheckSynchronize;//Application.ProcessMessages;
+        var StyleItem  := FMXStyleDemoForm.StyleBookDemo.Styles.Add;
         var StyleClone := StylesList.Styles[DataGrid.ColumnIndex].Style.Clone(StyleItem.Style);
         StyleItem.Style.AddObject(StyleClone);
         FMXStyleDemoForm.StyleName := '';
-        FMXStyleDemoForm.StyleBook := FMXStyleDemoForm.StyleBook1;
+        FMXStyleDemoForm.StyleBook := FMXStyleDemoForm.StyleBookDemo;
         FMXStyleDemoForm.Tag       := DataGrid.ColumnIndex;
       end;
-
-      // Das zurücksetzen klappt nicht immer.
-      // Trots deaktivieren/entfernen des Styles, ist beim ersten Mal die Größe immernoch FIXED.
-      // Also nochmal!
-      TThread.ForceQueue(nil, procedure
-        begin
-          for var idx := High(FDemoSizes) downto 0 do
-            if FMXStyleDemoForm.Components[idx] is TControl then begin
-            //(FMXStyleDemoForm.Components[idx] as TControl).FixedSize  := TSize.Create(0, 0);
-              (FMXStyleDemoForm.Components[idx] as TControl).Width      := FDemoSizes[idx].Width + 10;  // kurz ändern, damit die innere Darstellungsgröße neu berechnet wird, oder so?
-              (FMXStyleDemoForm.Components[idx] as TControl).Width      := FDemoSizes[idx].Width - 10;  // kurz ändern, damit die innere Darstellungsgröße neu berechnet wird, oder so?
-              (FMXStyleDemoForm.Components[idx] as TControl).BoundsRect := FDemoSizes[idx];
-            end;
-
-//          // nichtmal das hilft, also noch später
-//          ResizeTimer.Enabled := True;
-        end);
     finally
       FMXStyleDemoForm.EndUpdate;
       FMXStyleDemoForm.Visible := True;
@@ -417,8 +406,10 @@ end;
 procedure TFMXStyleOverviewForm.ExpanderViewOptionsExpandedChanged(Sender: TObject);
 begin
   if ExpanderViewOptions.IsExpanded then begin
-    CheckDemoForm.Position.Y := CheckAsComponent.LocalToAbsolute(Point(0, 0)).Y + 20;
+    CheckDemoForm.Position.Y := CheckAsComponent.LocalToAbsolute(Point(0, 0)).Y + 32;
     CheckFixed.Position.Y    := ExpanderViewOptions.BoundsRect.Bottom - CheckFixed.Height - 10;
+    CheckFixed.Visible       := True;
+    CheckDemoForm.Visible    := True;
   end else begin
     CheckDemoForm.Position.Y := ExpanderViewOptions.BoundsRect.Bottom + 10;
     CheckFixed.Position.Y    := ExpanderViewOptions.BoundsRect.Bottom + 35;
@@ -483,7 +474,7 @@ begin
   try
     BuildFolderList;
     InitGridAndStyleBook;
-    if not ( (GetKeyState(VK_SHIFT) < 0) or (GetKeyState(VK_CONTROL) < 0) ) then
+    if MessageDlg('Load Default-Styles?', TMsgDlgType.mtConfirmation, [mbYes, mbNo], 0, mbYes) = mrYes then
       LoadDefaultStyles;
     if not Application.Terminated then
       MenuLoadClick(MenuLoadFolder);
@@ -492,6 +483,8 @@ begin
     DataGrid.EndUpdate;
     DataGrid.Enabled := True;
     DataGrid.SetFocus;
+    if Length(FStyleInfos) <= 1 then
+      ExpanderViewOptions.IsExpanded := True;
   end;
 end;
 
@@ -505,15 +498,19 @@ begin
   Col.Width  := 200;
   DataGrid.AddObject(Col);
 
-  TThread.ForceQueue(nil, procedure
-    begin
+  //TThread.ForceQueue(nil, procedure
+  //  begin
       //DataGrid.Paint;
+      //CheckSynchronize;  // Hilft hier nicht (an der anderen Stelle aber)
+      //Application.ProcessMessages;  // Hilft hier, aber ist keine Lösung (sicherheitshalber dennoch den Timer im Code gelassen)
+      DataGrid.ApplyStyleLookup;
       var Header := DataGrid.FindStyleResource('header') as THeader;
       if Assigned(Header) then  // geht noch nicht im OnCreate und auch nicht im OnShow, oder leicht verzögert
         Header.Height := {185}140  // 140: daher auch WordWrap in DataGridDrawColumnHeader deaktivert
       else
-        TimerGridHeaderHeightBugfix.Enabled := True;
-    end);
+        //TimerGridHeaderHeightBugfix.Enabled := True;
+        raise Exception.Create('DataGrid-HeaderStyle');
+  //  end);
 
   // damit sich in TStyleCollectionItem.LoadFromStream die Styles f r alle Plattformen laden lassen
   // https://www.delphipraxis.net/217749-fmx-style-dateien-auslesen-und-ressourcen-enumerieren.html
@@ -594,6 +591,11 @@ end;
 
 procedure TFMXStyleOverviewForm.DataGridDrawColumnHeader(Sender: TObject; const Canvas: TCanvas; const Column: TColumn; const Bounds: TRectF);
 begin
+  var OptionsVisible := ExpanderViewOptions.IsExpanded
+    or not DataGrid.HScrollBar.IsVisible or (DataGrid.HScrollBar.Value < 20);
+  CheckDemoForm.Visible := OptionsVisible;
+  CheckFixed.Visible    := OptionsVisible;
+
   // Border
   Canvas.Fill.Kind := TBrushKind.Solid;
   Canvas.Fill.Color := TAlphaColorRec.Dimgray;
@@ -606,15 +608,17 @@ begin
   Canvas.FillRect(TextBounds, 1);
 
   // Text
-  if Column.Index = 0 then begin  // Fixed Column
+  if Column.Index = 0 then begin  // Fixed-Column-Header
     TextBounds.Inflate(-4, -2, -1.75, -3.75);
     Canvas.Fill.Color := TAlphaColors.Black;
     Canvas.FillText(TextBounds, Column.Header, True, 1, [], TTextAlign.Leading, TTextAlign.Trailing);
-  end else begin  // CheckBox-Columns
-    //TextBounds.Inflate(-2, -2, -1.75, -1.75);
-    //Canvas.Fill.Color := TAlphaColors.Black;
-    //Canvas.FillText(TextBounds, Column.Header, True, 1, [], TTextAlign.Leading, TTextAlign.Trailing);
-    TextBounds.Inflate(-2, -2, -1.75, -1.75);
+  end else begin  // CheckBox-Column-Header
+    TextBounds.Inflate(-1, -1, -1.75, -1.75);
+    if FStyleInfos[Column.Index].SysImage >= 0 then begin
+      var ImageBounds := RectF(TextBounds.Left, TextBounds.Bottom - 21, TextBounds.Right, TextBounds.Bottom - 3);
+      ImagesOS.Draw(Canvas, ImageBounds, FStyleInfos[Column.Index].SysImage);
+    end;
+    TextBounds.Inflate(0, 0, 0, -21);
     var TextRect := RectF(3, 0, TextBounds.Height, TextBounds.Width);
     var TxMatrix := TMatrix.CreateRotation(DegToRad(-90));
     var MxBackup := Canvas.Matrix;
@@ -747,7 +751,7 @@ begin
 
   //ListPlatforms.Enabled := False;  // das Mistding krallt sich den Fokus, wenn die Checkboxen gesetzt werden
   for var idx := ListPlatforms.Items.Count - 1 downto 0 do begin
-    var IsSystem := MatchText(ListPlatforms.Items[idx], FStyleInfos[ACol].System);
+    var IsSystem := MatchStr(ListPlatforms.Items[idx], FStyleInfos[ACol].System);
     ListPlatforms.ListItems[idx].FontColor := IfThen(IsSystem, TAlphaColors.Red, TAlphaColors.Black);
     //ListPlatforms.ListItems[idx].IsChecked := IsSystem;
   end;
@@ -1032,7 +1036,8 @@ begin
     FStyleInfos[FileIdx].FileData := Copy(FileData.Bytes);
     FStyleInfos[FileIdx].Source   := [Source];
     var Col := TCheckColumn.Create(DataGrid);
-    Col.Header := Header;
+    Col.Header    := Header;
+    Col.HorzAlign := TTextAlign.Center;
     DataGrid.AddObject(Col);
 
     var StreamFormat, RootClass: string;
@@ -1058,6 +1063,20 @@ begin
         + TrimFill(#10'AuthorURL    ' + Description.AuthorURL)   + 'Version         ' + Description.Version
     end else
       FStyleInfos[FileIdx].Descr := FStyleInfos[FileIdx].Descr + #10#10#10#10;
+
+    var ImSystem := FStyleInfos[FileIdx].System;
+    var SysImage := -1;
+    if MatchStr('[MSWINDOWS]', ImSystem) then
+      SysImage := 0;
+    if MatchStr('[MACOS]', ImSystem) then
+      if SysImage < 0 then SysImage := 2 else SysImage := 8;
+    if MatchStr('[IOS]', ImSystem) or MatchStr('[IOSALTERNATE]', ImSystem) then
+      if SysImage < 0 then SysImage := 4 else SysImage := 8;
+    if MatchStr('[ANDROID]', ImSystem) then
+      if SysImage < 0 then SysImage := 6 else SysImage := 8;
+    if MatchStr('[DARKSTYLE]', ImSystem) then
+      if SysImage >= 0 then Inc(SysImage);
+    FStyleInfos[FileIdx].SysImage := SysImage;
 
     AddStyleNames(Style.Style, FileIdx);
   finally
@@ -1146,11 +1165,11 @@ end;
 
 procedure TFMXStyleOverviewForm.TimerGridHeaderHeightBugfixTimer(Sender: TObject);
 begin
-  var Header := DataGrid.FindStyleResource('header') as THeader;
-  if Assigned(Header) then begin
-    Header.Height := {180}140;
-    TimerGridHeaderHeightBugfix.Enabled := False;
-  end;
+//  var Header := DataGrid.FindStyleResource('header') as THeader;
+//  if Assigned(Header) then begin
+//    Header.Height := {180}140;
+//    TimerGridHeaderHeightBugfix.Enabled := False;
+//  end;
 end;
 
 function TFMXStyleOverviewForm.TrimFill(Value: string; Len: Integer): string;

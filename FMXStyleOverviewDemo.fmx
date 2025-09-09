@@ -1,13 +1,13 @@
 object FMXStyleDemoForm: TFMXStyleDemoForm
   Left = 0
   Top = 0
-  BorderIcons = [biSystemMenu]
+  BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = Single
   Caption = 'Style-Demo'
   ClientHeight = 1033
   ClientWidth = 754
   Position = Designed
-  StyleBook = StyleBook1
+  StyleBook = StyleBookDemo
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
@@ -610,7 +610,6 @@ object FMXStyleDemoForm: TFMXStyleDemoForm
       object FloatAnimation1: TFloatAnimation
         AutoReverse = True
         Enabled = True
-        Delay = 2.000000000000000000
         Duration = 7.000000000000000000
         Interpolation = Bounce
         Loop = True
@@ -1482,7 +1481,7 @@ object FMXStyleDemoForm: TFMXStyleDemoForm
     TextSettings.Trimming = None
     OnClick = Button7Click
   end
-  object StyleBook1: TStyleBook
+  object StyleBookDemo: TStyleBook
     Styles = <
       item
       end>
