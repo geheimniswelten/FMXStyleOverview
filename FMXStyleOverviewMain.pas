@@ -334,6 +334,7 @@ begin
           {}Control.Width    := FDemoSizes[idx].Width - 10;  // kurz ändern, damit die innere Darstellungsgröße neu berechnet wird, oder so?
           Control.BoundsRect := FDemoSizes[idx];
           {}Control.InvalidateRect(Control.BoundsRect);
+          TButton(Control).Scale.Point := PointF(1, 1);
         end;
 
       if (DataGrid.ColumnIndex > 0) and (DataGrid.ColumnIndex < StylesList.Styles.Count) then begin
@@ -350,6 +351,15 @@ begin
         FMXStyleDemoForm.StyleBook := FMXStyleDemoForm.StyleBookDemo;
         FMXStyleDemoForm.Tag       := DataGrid.ColumnIndex;
       end;
+
+      FMXStyleDemoForm.Button8.ApplyStyleLookup;
+      var ButtonScale := 32 / FMXStyleDemoForm.Button8.Height;
+      FMXStyleDemoForm.LabelToolButtonScale.Text := Round(ButtonScale * 100).ToString + ' %';
+      for var idx := FMXStyleDemoForm.GroupToolButtons.ControlsCount - 1 downto 0 do
+        if FMXStyleDemoForm.GroupToolButtons.Controls[idx] is TButton then begin
+          var Control := TButton(FMXStyleDemoForm.GroupToolButtons.Controls[idx]);
+          Control.Scale.Point := PointF(ButtonScale, ButtonScale);
+        end;
     finally
       FMXStyleDemoForm.EndUpdate;
       FMXStyleDemoForm.Visible := True;
@@ -545,6 +555,7 @@ begin
   end else begin
     var CustomDraw := False;
     if CheckFixed.IsChecked then begin
+      Bounds.Offset(1, 1);
       case FStyleFixed[Row, Column.Index - 1] of
         TAdjustType.FixedSize: begin
           Canvas.Fill.Color := TAlphaColorRec.Red;
@@ -562,6 +573,7 @@ begin
             Bounds.Top), Bounds.BottomRight), 0.25);
         end;
       end;
+      Bounds.Offset(-1, -1);
       CustomDraw := True;
     end else begin
       // DataGrid.DefaultDrawing muß True bleiben, sonst werden die CheckBoxen nicht mehr gemalt, auch nicht mit Column.DefaultDrawCell

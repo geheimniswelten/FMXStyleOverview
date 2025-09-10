@@ -161,6 +161,16 @@ type
     Button46: TButton;
     Button47: TButton;
     Button48: TButton;
+    Button49: TButton;
+    Button50: TButton;
+    Button51: TButton;
+    Button52: TButton;
+    Button53: TButton;
+    Button54: TButton;
+    Button55: TButton;
+    Button56: TButton;
+    Button57: TButton;
+    LabelToolButtonScale: TLabel;
     SmallScrollBar2: TSmallScrollBar;
     FloatAnimation1: TFloatAnimation;
     TrackMagnifierGlass: TTrackBar;

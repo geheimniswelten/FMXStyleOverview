@@ -123,7 +123,7 @@ object FMXStyleDemoForm: TFMXStyleDemoForm
     Position.X = 8.000000000000000000
     Position.Y = 171.000000000000000000
     Size.Width = 369.000000000000000000
-    Size.Height = 218.000000000000000000
+    Size.Height = 216.000000000000000000
     Size.PlatformDefault = False
     Text = 'ToolButtons'
     TabOrder = 12
@@ -134,7 +134,7 @@ object FMXStyleDemoForm: TFMXStyleDemoForm
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'actiontoolbuttonbordered'
-      TabOrder = 77
+      TabOrder = 87
       Text = 'Button'
       TextSettings.Trimming = None
     end
@@ -145,7 +145,7 @@ object FMXStyleDemoForm: TFMXStyleDemoForm
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'addtoolbuttonbordered'
-      TabOrder = 76
+      TabOrder = 86
       Text = 'Button'
       TextSettings.Trimming = None
     end
@@ -156,7 +156,7 @@ object FMXStyleDemoForm: TFMXStyleDemoForm
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'arrowdowntoolbuttonbordered'
-      TabOrder = 75
+      TabOrder = 85
       Text = 'Button'
       TextSettings.Trimming = None
     end
@@ -167,7 +167,7 @@ object FMXStyleDemoForm: TFMXStyleDemoForm
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'arrowlefttoolbuttonbordered'
-      TabOrder = 74
+      TabOrder = 84
       Text = 'Button'
       TextSettings.Trimming = None
     end
@@ -178,7 +178,7 @@ object FMXStyleDemoForm: TFMXStyleDemoForm
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'arrowrighttoolbuttonbordered'
-      TabOrder = 73
+      TabOrder = 83
       Text = 'Button'
       TextSettings.Trimming = None
     end
@@ -189,7 +189,7 @@ object FMXStyleDemoForm: TFMXStyleDemoForm
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'arrowuptoolbuttonbordered'
-      TabOrder = 72
+      TabOrder = 82
       Text = 'Button'
       TextSettings.Trimming = None
     end
@@ -200,7 +200,7 @@ object FMXStyleDemoForm: TFMXStyleDemoForm
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'backtoolbutton'
-      TabOrder = 71
+      TabOrder = 81
       Text = 'BACK'
       TextSettings.Trimming = None
     end
@@ -211,7 +211,7 @@ object FMXStyleDemoForm: TFMXStyleDemoForm
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'bookmarkstoolbuttonbordered'
-      TabOrder = 70
+      TabOrder = 80
       Text = 'Button'
       TextSettings.Trimming = None
     end
@@ -222,7 +222,7 @@ object FMXStyleDemoForm: TFMXStyleDemoForm
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'buttonstyle'
-      TabOrder = 69
+      TabOrder = 79
       Text = 'Button'
       TextSettings.Trimming = None
     end
@@ -233,7 +233,7 @@ object FMXStyleDemoForm: TFMXStyleDemoForm
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'cameratoolbuttonbordered'
-      TabOrder = 68
+      TabOrder = 78
       Text = 'Button'
       TextSettings.Trimming = None
     end
@@ -244,7 +244,7 @@ object FMXStyleDemoForm: TFMXStyleDemoForm
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'cleareditbutton'
-      TabOrder = 67
+      TabOrder = 77
       Text = 'Button'
       TextSettings.Trimming = None
     end
@@ -255,7 +255,7 @@ object FMXStyleDemoForm: TFMXStyleDemoForm
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'colorbuttonstyle'
-      TabOrder = 66
+      TabOrder = 76
       Text = 'Button'
       TextSettings.Trimming = None
     end
@@ -266,7 +266,7 @@ object FMXStyleDemoForm: TFMXStyleDemoForm
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'composetoolbuttonbordered'
-      TabOrder = 65
+      TabOrder = 75
       Text = 'Button'
       TextSettings.Trimming = None
     end
@@ -277,7 +277,7 @@ object FMXStyleDemoForm: TFMXStyleDemoForm
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'cornerbuttonstyle'
-      TabOrder = 64
+      TabOrder = 74
       Text = 'Corner'
       TextSettings.Trimming = None
     end
@@ -288,7 +288,7 @@ object FMXStyleDemoForm: TFMXStyleDemoForm
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'deleteitembutton'
-      TabOrder = 63
+      TabOrder = 73
       Text = 'Button'
       TextSettings.Trimming = None
     end
@@ -299,7 +299,7 @@ object FMXStyleDemoForm: TFMXStyleDemoForm
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'deletetoolbutton'
-      TabOrder = 62
+      TabOrder = 72
       Text = 'Delete'
       TextSettings.Trimming = None
     end
@@ -310,7 +310,7 @@ object FMXStyleDemoForm: TFMXStyleDemoForm
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'detailstoolbuttonbordered'
-      TabOrder = 61
+      TabOrder = 71
       Text = 'Button'
       TextSettings.Trimming = None
     end
@@ -321,7 +321,7 @@ object FMXStyleDemoForm: TFMXStyleDemoForm
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'donetoolbutton'
-      TabOrder = 60
+      TabOrder = 70
       Text = 'Done'
       TextSettings.Trimming = None
     end
@@ -332,7 +332,7 @@ object FMXStyleDemoForm: TFMXStyleDemoForm
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'drawertoolbuttonbordered'
-      TabOrder = 59
+      TabOrder = 69
       Text = 'Button'
       TextSettings.Trimming = None
     end
@@ -343,7 +343,7 @@ object FMXStyleDemoForm: TFMXStyleDemoForm
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'dropdowneditbutton'
-      TabOrder = 58
+      TabOrder = 68
       Text = 'Button'
       TextSettings.Trimming = None
     end
@@ -354,7 +354,7 @@ object FMXStyleDemoForm: TFMXStyleDemoForm
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'ellipseseditbutton'
-      TabOrder = 57
+      TabOrder = 67
       Text = 'Button'
       TextSettings.Trimming = None
     end
@@ -365,7 +365,7 @@ object FMXStyleDemoForm: TFMXStyleDemoForm
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'escapetoolbuttonbordered'
-      TabOrder = 56
+      TabOrder = 66
       Text = 'Button'
       TextSettings.Trimming = None
     end
@@ -376,7 +376,7 @@ object FMXStyleDemoForm: TFMXStyleDemoForm
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'forwardtoolbuttonbordered'
-      TabOrder = 55
+      TabOrder = 65
       Text = 'Button'
       TextSettings.Trimming = None
     end
@@ -387,7 +387,7 @@ object FMXStyleDemoForm: TFMXStyleDemoForm
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'infotoolbuttonbordered'
-      TabOrder = 54
+      TabOrder = 64
       Text = 'Button'
       TextSettings.Trimming = None
     end
@@ -398,7 +398,7 @@ object FMXStyleDemoForm: TFMXStyleDemoForm
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'listitembutton'
-      TabOrder = 53
+      TabOrder = 63
       Text = 'List'
       TextSettings.Trimming = None
     end
@@ -409,7 +409,7 @@ object FMXStyleDemoForm: TFMXStyleDemoForm
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'listitemdeletebutton'
-      TabOrder = 52
+      TabOrder = 62
       Text = 'DelList'
       TextSettings.Trimming = None
     end
@@ -420,7 +420,7 @@ object FMXStyleDemoForm: TFMXStyleDemoForm
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'nexttoolbuttonbordered'
-      TabOrder = 51
+      TabOrder = 61
       Text = 'Button'
       TextSettings.Trimming = None
     end
@@ -431,7 +431,7 @@ object FMXStyleDemoForm: TFMXStyleDemoForm
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'organizetoolbuttonbordered'
-      TabOrder = 50
+      TabOrder = 60
       Text = 'Button'
       TextSettings.Trimming = None
     end
@@ -442,7 +442,7 @@ object FMXStyleDemoForm: TFMXStyleDemoForm
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'pagecurltoolbutton'
-      TabOrder = 49
+      TabOrder = 59
       Text = 'Button'
       TextSettings.Trimming = None
     end
@@ -453,7 +453,7 @@ object FMXStyleDemoForm: TFMXStyleDemoForm
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'passwordeditbutton'
-      TabOrder = 48
+      TabOrder = 58
       Text = 'Button'
       TextSettings.Trimming = None
     end
@@ -464,7 +464,7 @@ object FMXStyleDemoForm: TFMXStyleDemoForm
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'pausetoolbuttonbordered'
-      TabOrder = 47
+      TabOrder = 57
       Text = 'Button'
       TextSettings.Trimming = None
     end
@@ -475,7 +475,7 @@ object FMXStyleDemoForm: TFMXStyleDemoForm
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'playtoolbuttonbordered'
-      TabOrder = 46
+      TabOrder = 56
       Text = 'Button'
       TextSettings.Trimming = None
     end
@@ -486,7 +486,7 @@ object FMXStyleDemoForm: TFMXStyleDemoForm
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'priortoolbuttonbordered'
-      TabOrder = 45
+      TabOrder = 55
       Text = 'Button'
       TextSettings.Trimming = None
     end
@@ -497,7 +497,7 @@ object FMXStyleDemoForm: TFMXStyleDemoForm
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'radiobuttonstyle'
-      TabOrder = 44
+      TabOrder = 54
       Text = 'Radio'
       TextSettings.Trimming = None
     end
@@ -508,7 +508,7 @@ object FMXStyleDemoForm: TFMXStyleDemoForm
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'refreshtoolbuttonbordered'
-      TabOrder = 43
+      TabOrder = 53
       Text = 'Button'
       TextSettings.Trimming = None
     end
@@ -519,7 +519,7 @@ object FMXStyleDemoForm: TFMXStyleDemoForm
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'replytoolbuttonbordered'
-      TabOrder = 42
+      TabOrder = 52
       Text = 'Button'
       TextSettings.Trimming = None
     end
@@ -530,7 +530,7 @@ object FMXStyleDemoForm: TFMXStyleDemoForm
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'rewindtoolbuttonbordered'
-      TabOrder = 41
+      TabOrder = 51
       Text = 'Button'
       TextSettings.Trimming = None
     end
@@ -541,7 +541,7 @@ object FMXStyleDemoForm: TFMXStyleDemoForm
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'searcheditbutton'
-      TabOrder = 40
+      TabOrder = 50
       Text = 'Button'
       TextSettings.Trimming = None
     end
@@ -552,29 +552,29 @@ object FMXStyleDemoForm: TFMXStyleDemoForm
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'searchtoolbuttonbordered'
-      TabOrder = 39
+      TabOrder = 49
       Text = 'Button'
       TextSettings.Trimming = None
     end
     object Button47: TButton
       Position.X = 296.000000000000000000
       Position.Y = 144.000000000000000000
-      Size.Width = 32.000000000000000000
+      Size.Width = 48.000000000000000000
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'speedbuttonstyle'
-      TabOrder = 38
+      TabOrder = 48
       Text = 'Speed'
       TextSettings.Trimming = None
     end
     object Button48: TButton
-      Position.X = 328.000000000000000000
-      Position.Y = 144.000000000000000000
+      Position.X = 8.000000000000000000
+      Position.Y = 176.000000000000000000
       Size.Width = 32.000000000000000000
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
-      StyleLookup = 'addtoolbutton'
-      TabOrder = 37
+      StyleLookup = 'spinbottombutton'
+      TabOrder = 47
       Text = 'Button'
       TextSettings.Trimming = None
     end
@@ -587,11 +587,122 @@ object FMXStyleDemoForm: TFMXStyleDemoForm
       Position.X = 296.000000000000000000
       Position.Y = 10.000000000000000000
       Size.Width = 72.000000000000000000
-      Size.Height = 19.000000000000000000
+      Size.Height = 23.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 78
+      TabOrder = 88
       Text = 'Borders'
       OnChange = CheckToolButtonBordersChange
+    end
+    object Button49: TButton
+      Position.X = 40.000000000000000000
+      Position.Y = 176.000000000000000000
+      Size.Width = 32.000000000000000000
+      Size.Height = 32.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = 'spineditbutton'
+      TabOrder = 46
+      Text = 'Button'
+      TextSettings.Trimming = None
+    end
+    object Button50: TButton
+      Position.X = 72.000000000000000000
+      Position.Y = 176.000000000000000000
+      Size.Width = 32.000000000000000000
+      Size.Height = 32.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = 'spinleftbutton'
+      TabOrder = 45
+      Text = 'Button'
+      TextSettings.Trimming = None
+    end
+    object Button51: TButton
+      Position.X = 104.000000000000000000
+      Position.Y = 176.000000000000000000
+      Size.Width = 32.000000000000000000
+      Size.Height = 32.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = 'spinrightbutton'
+      TabOrder = 44
+      Text = 'Button'
+      TextSettings.Trimming = None
+    end
+    object Button52: TButton
+      Position.X = 136.000000000000000000
+      Position.Y = 176.000000000000000000
+      Size.Width = 32.000000000000000000
+      Size.Height = 32.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = 'spintopbutton'
+      TabOrder = 43
+      Text = 'Button'
+      TextSettings.Trimming = None
+    end
+    object Button53: TButton
+      Position.X = 168.000000000000000000
+      Position.Y = 176.000000000000000000
+      Size.Width = 32.000000000000000000
+      Size.Height = 32.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = 'stepperbuttonleft'
+      TabOrder = 42
+      Text = 'Button'
+      TextSettings.Trimming = None
+    end
+    object Button54: TButton
+      Position.X = 200.000000000000000000
+      Position.Y = 176.000000000000000000
+      Size.Width = 32.000000000000000000
+      Size.Height = 32.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = 'stepperbuttonright'
+      TabOrder = 41
+      Text = 'Button'
+      TextSettings.Trimming = None
+    end
+    object Button55: TButton
+      Position.X = 232.000000000000000000
+      Position.Y = 176.000000000000000000
+      Size.Width = 32.000000000000000000
+      Size.Height = 32.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = 'stoptoolbuttonbordered'
+      TabOrder = 40
+      Text = 'Button'
+      TextSettings.Trimming = None
+    end
+    object Button56: TButton
+      Position.X = 264.000000000000000000
+      Position.Y = 176.000000000000000000
+      Size.Width = 32.000000000000000000
+      Size.Height = 32.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = 'transparentcirclebuttonstyle'
+      TabOrder = 39
+      Text = 'Button'
+      TextSettings.Trimming = None
+    end
+    object Button57: TButton
+      Position.X = 296.000000000000000000
+      Position.Y = 176.000000000000000000
+      Size.Width = 32.000000000000000000
+      Size.Height = 32.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = 'trashtoolbuttonbordered'
+      TabOrder = 38
+      Text = 'Button'
+      TextSettings.Trimming = None
+    end
+    object LabelToolButtonScale: TLabel
+      Position.X = 296.000000000000000000
+      Position.Y = 33.000000000000000000
+      Size.Width = 59.000000000000000000
+      Size.Height = 24.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.HorzAlign = Trailing
+      TextSettings.VertAlign = Leading
+      TextSettings.WordWrap = False
+      Text = '100 %'
+      TabOrder = 89
     end
   end
   object Panel1: TPanel
@@ -935,8 +1046,8 @@ object FMXStyleDemoForm: TFMXStyleDemoForm
     Size.Height = 97.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 29
-    Viewport.Width = 245.000000000000000000
-    Viewport.Height = 97.000000000000000000
+    Viewport.Width = 225.000000000000000000
+    Viewport.Height = 77.000000000000000000
   end
   object TreeView1: TTreeView
     Position.X = 288.000000000000000000
@@ -1195,8 +1306,8 @@ object FMXStyleDemoForm: TFMXStyleDemoForm
     TabOrder = 46
     RowCount = 11
     OnGetValue = Grid1GetValue
-    Viewport.Width = 245.000000000000000000
-    Viewport.Height = 173.000000000000000000
+    Viewport.Width = 225.000000000000000000
+    Viewport.Height = 148.000000000000000000
     object StringColumn1: TStringColumn
       Header = 'String'
       HeaderSettings.TextSettings.WordWrap = False
