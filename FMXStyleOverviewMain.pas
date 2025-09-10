@@ -353,7 +353,8 @@ begin
       end;
 
       FMXStyleDemoForm.Button8.ApplyStyleLookup;
-      var ButtonScale := 32 / FMXStyleDemoForm.Button8.Height;
+      FMXStyleDemoForm.Button16.ApplyStyleLookup;
+      var ButtonScale := 32 / Max(FMXStyleDemoForm.Button8.Height, FMXStyleDemoForm.Button16.Height);
       FMXStyleDemoForm.LabelToolButtonScale.Text := Round(ButtonScale * 100).ToString + ' %';
       for var idx := FMXStyleDemoForm.GroupToolButtons.ControlsCount - 1 downto 0 do
         if FMXStyleDemoForm.GroupToolButtons.Controls[idx] is TButton then begin
