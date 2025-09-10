@@ -70,7 +70,6 @@ type
     MenuItemSave: TMenuItem;
     SaveDialog: TSaveDialog;
     OpenDialog: TOpenDialog;
-    TimerGridHeaderHeightBugfix: TTimer;
     Label1: TLabel;
     ImagesOS: TImageList;
     {$ENDREGION}
@@ -95,7 +94,6 @@ type
     procedure MenuLoadClick(Sender: TObject);
     procedure MenuItemSaveClick(Sender: TObject);
     procedure ButtonLoadSaveClick(Sender: TObject);
-    procedure TimerGridHeaderHeightBugfixTimer(Sender: TObject);
     procedure DropTarget1Dropped(Sender: TObject; const Data: TDragObject; const Point: TPointF);
     procedure DropTarget1DragOver(Sender: TObject; const Data: TDragObject; const Point: TPointF; var Operation: TDragOperation);
     {$ENDREGION}
@@ -119,6 +117,7 @@ type
     FDelphiDir:  string;
     FDemoSizes:  TArray<TRectF>;  // beim Laden der Styles werden komponenten in der Größe verändert, aber beim Entfernen des Styles nicht wiederhergestellt.
     FDemoMoved:  Boolean;         // beim ersten Anzeigen der Demo wir die Mainform verschoben
+    FLockCell:   TPoint;          // für Sperre während Application.ProcessMessages
     procedure BuildFolderList;
     function  OpenFolderDialog(InitialFolder: string): TArray<string>;
     function  FindStyleFiles(FolderName: string): TArray<string>;
@@ -284,7 +283,7 @@ end;
 
 procedure TFMXStyleOverviewForm.CheckAsComponentChange(Sender: TObject);
 begin
-  //
+  // not implemented yet
 end;
 
 procedure TFMXStyleOverviewForm.CheckBackgroundChange(Sender: TObject);
@@ -324,15 +323,17 @@ begin
       FMXStyleDemoForm.StyleBook := nil;
       FMXStyleDemoForm.StyleName := '';
       FMXStyleDemoForm.Tag       := -1;
-      {CheckSynchronize;}Application.ProcessMessages;  // Einiges läuft verzögert, z.B. in TStyledControl.KillResourceLink via ForceQueue
+      {}FLockCell.X := DataGrid.ColumnIndex; FLockCell.Y := DataGrid.Row; try
+      {CheckSynchronize;} Application.ProcessMessages;  // Einiges läuft verzögert, z.B. in TStyledControl.KillResourceLink via ForceQueue
+      {}finally FLockCell.X := -1; end;
       for var idx := High(FDemoSizes) downto 0 do
         if FMXStyleDemoForm.Components[idx] is TControl then begin
           var Control := TControl(FMXStyleDemoForm.Components[idx]);
           Control.FixedSize  := TSize.Create(0, 0);
-          Control.Width      := FDemoSizes[idx].Width + 10;  // kurz ändern, damit die innere Darstellungsgröße neu berechnet wird, oder so?
-          Control.Width      := FDemoSizes[idx].Width - 10;  // kurz ändern, damit die innere Darstellungsgröße neu berechnet wird, oder so?
+          {}Control.Width    := FDemoSizes[idx].Width + 10;  // kurz ändern, damit die innere Darstellungsgröße neu berechnet wird, oder so?
+          {}Control.Width    := FDemoSizes[idx].Width - 10;  // kurz ändern, damit die innere Darstellungsgröße neu berechnet wird, oder so?
           Control.BoundsRect := FDemoSizes[idx];
-          Control.InvalidateRect(Control.BoundsRect);
+          {}Control.InvalidateRect(Control.BoundsRect);
         end;
 
       if (DataGrid.ColumnIndex > 0) and (DataGrid.ColumnIndex < StylesList.Styles.Count) then begin
@@ -442,6 +443,8 @@ end;
 
 procedure TFMXStyleOverviewForm.FormCreate(Sender: TObject);
 begin
+  FLockCell.X := -1;
+
   Height := Round(Screen.WorkAreaHeight - 20);
   Width  := 1333;
 
@@ -490,6 +493,14 @@ end;
 
 procedure TFMXStyleOverviewForm.InitGridAndStyleBook;
 begin
+  SetLength(FStyleInfos, 1);
+  SetLength(FStyleNames, 0);
+  SetLength(FStyleFound, 0, 1);
+  SetLength(FStyleFixed, 0, 1);
+
+  StylesList.Clear;
+  StylesList.Styles.Add.Platform := '';  // Empty (Default) Style : damit bei Zuweisung an die Form nicht ausversehn irgendwas verwendet wird.
+
   DataGrid.ClearColumns;
   DataGrid.RowCount := 0;
 
@@ -498,31 +509,16 @@ begin
   Col.Width  := 200;
   DataGrid.AddObject(Col);
 
-  //TThread.ForceQueue(nil, procedure
-  //  begin
-      //DataGrid.Paint;
-      //CheckSynchronize;  // Hilft hier nicht (an der anderen Stelle aber)
-      //Application.ProcessMessages;  // Hilft hier, aber ist keine Lösung (sicherheitshalber dennoch den Timer im Code gelassen)
-      DataGrid.ApplyStyleLookup;
-      var Header := DataGrid.FindStyleResource('header') as THeader;
-      if Assigned(Header) then  // geht noch nicht im OnCreate und auch nicht im OnShow, oder leicht verzögert
-        Header.Height := {185}140  // 140: daher auch WordWrap in DataGridDrawColumnHeader deaktivert
-      else
-        //TimerGridHeaderHeightBugfix.Enabled := True;
-        raise Exception.Create('DataGrid-HeaderStyle');
-  //  end);
+  DataGrid.ApplyStyleLookup;
+  var Header := DataGrid.FindStyleResource('header') as THeader;
+  if Assigned(Header) then  // ~geht~ ging noch nicht im OnCreate und auch nicht im OnShow oder leicht verzögert im ForceQueue
+    Header.Height := 140
+  else
+    raise Exception.Create('DataGrid-HeaderStyle');
 
-  // damit sich in TStyleCollectionItem.LoadFromStream die Styles f r alle Plattformen laden lassen
+  // damit sich in TStyleCollectionItem.LoadFromStream die Styles für alle Plattformen laden lassen
   // https://www.delphipraxis.net/217749-fmx-style-dateien-auslesen-und-ressourcen-enumerieren.html
   TStyleBookAccess(StylesList).SetDesigning(True);
-
-  StylesList.Clear;
-  StylesList.Styles.Add.Platform := '';  // Empty (Default) Style : damit bei Zuweisung an die Form nicht ausversehn irgendwas verwendet wird.
-
-  SetLength(FStyleInfos, 1);
-  SetLength(FStyleNames, 0);
-  SetLength(FStyleFound, 0, 1);
-  SetLength(FStyleFixed, 0, 1);
 end;
 
 procedure TFMXStyleOverviewForm.DataGridDrawColumnCell(Sender: TObject; const Canvas: TCanvas; const Column: TColumn; const Bounds: TRectF; const Row: Integer; const Value: TValue; const State: TGridDrawStates);
@@ -568,15 +564,15 @@ begin
       end;
       CustomDraw := True;
     end else begin
-      // DataGrid.DefaultDrawing mu  True bleiben, sonst werden die CheckBoxen nicht mehr gemalt, auch nicht mit Column.DefaultDrawCell
-      //CustomDraw := True;  // nicht n tig, weil DefaultDrawing=True
+      // DataGrid.DefaultDrawing muß True bleiben, sonst werden die CheckBoxen nicht mehr gemalt, auch nicht mit Column.DefaultDrawCell
+      //CustomDraw := True;  // nicht nötig, weil DefaultDrawing=True
     end;
 
     var _State := State;
     if (Column.Index > 0) and (Column.Index = DataGrid.ColumnIndex) and (Row <> DataGrid.Selected) then begin
       //_State := _State + [TGridDrawState.RowSelected];
       //CustomDraw := True;
-      // am Liebsten w rde ich den Hintergrund f rben/ bermalen, aber da sich die Checkboxen nicht manuell malen lassen .....
+      // am Liebsten würde ich den Hintergrund färben/übermalen, aber da sich die Checkboxen nicht manuell malen lassen .....
       { TODO : eventuell TCheckCell.DrawCell direkt aufrufen? }
       var CellBounds := Bounds;
       CellBounds.Inflate(+4, +4, +4, +4);
@@ -646,6 +642,9 @@ end;
 
 procedure TFMXStyleOverviewForm.DataGridKeyDown(Sender: TObject; var Key: Word; var KeyChar: WideChar; Shift: TShiftState);
 begin
+  if FLockCell.X >= 0 then
+    Exit;
+
   // gehe zu nächstem Style (überspringe leere Zellen)
   if (Shift = [ssShift]) and (Key in [vkLeft..vkDown]) then begin
     var CellLoop := (DataGrid.ColumnCount - 1) * DataGrid.RowCount;
@@ -685,7 +684,7 @@ begin
           else
             DataGrid.Row := DataGrid.Row + 1;
       end;
-      if FStyleFound[DataGrid.Row, DataGrid.ColumnIndex - 1] then
+      if FStyleFound[DataGrid.Row, DataGrid.ColumnIndex] then
         Break;
       Dec(CellLoop);
       if CellLoop = 0 then begin
@@ -735,6 +734,12 @@ procedure TFMXStyleOverviewForm.DataGridSelectCell(Sender: TObject; const ACol, 
       Tree := Tree + Ident + 'NONE'#10;
   end;
 begin
+  if FLockCell.X >= 0 then begin
+    DataGrid.ColumnIndex := FLockCell.X;
+    DataGrid.Row         := FLockCell.Y;
+    Exit;
+  end;
+
   ButtonSave.Enabled := ACol > 0;
   if ({DataGrid.Row}ARow < 0) or ({DataGrid.ColumnIndex}ACol < 0) then
     Exit;
@@ -1163,40 +1168,10 @@ begin
   end;
 end;
 
-procedure TFMXStyleOverviewForm.TimerGridHeaderHeightBugfixTimer(Sender: TObject);
-begin
-//  var Header := DataGrid.FindStyleResource('header') as THeader;
-//  if Assigned(Header) then begin
-//    Header.Height := {180}140;
-//    TimerGridHeaderHeightBugfix.Enabled := False;
-//  end;
-end;
-
 function TFMXStyleOverviewForm.TrimFill(Value: string; Len: Integer): string;
 begin
   Result := Value.Substring(0, Len - 2).PadRight(Len, ' ');
 end;
 
 end.
-
-
-
-
-
-x not is y = not (x is y)
-x not in y = not (x in y)
-x not and y = nand = not (x and y)
-x not or y = nor = not (x or y)
-
-
-if a not in b then
-if not (a in b) then
-
-OK, "not and" und "and not" ergibt letztentlich das Gleiche, auch wenn einmal das Endergebnis gedreht wird, aber beim Anderen nur das zweite Argument.
-if (a) not and (b) then
-if (a) and (not b) then
-
-
-      ListPlatforms.ListItems[1].FontColor  := TAlphaColors.Red;
-      ListPlatforms.ListItems[1].IsChecked  := True;
 

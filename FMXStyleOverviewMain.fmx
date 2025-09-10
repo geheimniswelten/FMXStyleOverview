@@ -423,13 +423,6 @@ object FMXStyleOverviewForm: TFMXStyleOverviewForm
     Left = 352
     Top = 120
   end
-  object TimerGridHeaderHeightBugfix: TTimer
-    Enabled = False
-    Interval = 100
-    OnTimer = TimerGridHeaderHeightBugfixTimer
-    Left = 256
-    Top = 264
-  end
   object ImagesOS: TImageList
     Source = <
       item
