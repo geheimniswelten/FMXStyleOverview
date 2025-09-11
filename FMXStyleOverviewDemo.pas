@@ -187,6 +187,22 @@ type
     FloatAnimation6: TFloatAnimation;
     SmallScrollBar9: TSmallScrollBar;
     FloatAnimation9: TFloatAnimation;
+    Panel6: TPanel;
+    Edit2: TEdit;
+    EditButton1: TEditButton;
+    Edit3: TEdit;
+    SpinEditButton1: TSpinEditButton;
+    Edit4: TEdit;
+    DropDownEditButton1: TDropDownEditButton;
+    Edit5: TEdit;
+    EllipsesEditButton1: TEllipsesEditButton;
+    Edit6: TEdit;
+    ClearEditButton1: TClearEditButton;
+    Edit7: TEdit;
+    PasswordEditButton1: TPasswordEditButton;
+    Edit8: TEdit;
+    SearchEditButton1: TSearchEditButton;
+    TimerButtonEdit: TTimer;
     {$ENDREGION}
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -210,9 +226,15 @@ type
     procedure DropTarget1DragEnd(Sender: TObject);
     procedure DropTarget1DragDrop(Sender: TObject; const Data: TDragObject; const Point: TPointF);
     procedure CheckToolButtonBordersChange(Sender: TObject);
+    procedure SpinEditButton1UpClick(Sender: TObject);
+    procedure SpinEditButton1DownClick(Sender: TObject);
+    procedure EditButton1Click(Sender: TObject);
+    procedure Edit2Change(Sender: TObject);
+    procedure TimerButtonEditTimer(Sender: TObject);
   private
     FEnableChangeEvents:  Boolean;
     FBorderedToolButtons: TArray<TButton>;
+    FClickNotifierHint:   string;
     procedure ButtonClickNotifier(Sender: TObject);
   end;
 
@@ -226,6 +248,16 @@ implementation
 uses
   FMXStyleOverviewMain;
 
+{$if not Declared(Coalesce)}
+function Coalesce(Value1, Value2: string): string;
+begin
+  if Value1 <> '' then
+    Result := Value1
+  else
+    Result := Value2;
+end;
+{$endif}
+
 procedure TFMXStyleDemoForm.Button7Click(Sender: TObject);
 begin
   var CtrlRect   := RectF(0, 0, Button7.Width, Button7.Height);
@@ -236,13 +268,14 @@ end;
 procedure TFMXStyleDemoForm.ButtonClickNotifier(Sender: TObject);
 begin
   var Button := Sender as TControl;
-  var Point  := Button.LocalToAbsolute(PointF(0, Button.Height + 2));
-  if Sender <> DropTarget1 then
-    ControlHintLabel.Text := 'Clicked';
+  var Point  := Button.LocalToAbsolute(PointF(-15, Button.Height + 2));
+  ControlHintLabel.Text    := Coalesce(FClickNotifierHint, 'Clicked');
+  ControlHintPanel.BringToFront;
   ControlHintPanel.Position.Point := Point;
   ControlHintPanel.Opacity := ControlHintAnimation.StartValue;
   ControlHintPanel.Visible := True;
   ControlHintAnimation.Start;
+  FClickNotifierHint := '';
 end;
 
 procedure TFMXStyleDemoForm.CheckBox1Change(Sender: TObject);
@@ -394,25 +427,25 @@ end;
 
 procedure TFMXStyleDemoForm.DropTarget1DragDrop(Sender: TObject; const Data: TDragObject; const Point: TPointF);
 begin
-  ControlHintLabel.Text := 'Drop';
+  FClickNotifierHint := 'Drop';
   ButtonClickNotifier(Sender);
 end;
 
 procedure TFMXStyleDemoForm.DropTarget1DragEnd(Sender: TObject);
 begin
-  ControlHintLabel.Text := 'End';
+  FClickNotifierHint := 'End';
   ButtonClickNotifier(Sender);
 end;
 
 procedure TFMXStyleDemoForm.DropTarget1DragEnter(Sender: TObject; const Data: TDragObject; const Point: TPointF);
 begin
-  ControlHintLabel.Text := 'Enter';
+  FClickNotifierHint := 'Enter';
   ButtonClickNotifier(Sender);
 end;
 
 procedure TFMXStyleDemoForm.DropTarget1DragLeave(Sender: TObject);
 begin
-  ControlHintLabel.Text := 'Leave';
+  FClickNotifierHint := 'Leave';
   ButtonClickNotifier(Sender);
 end;
 
@@ -426,7 +459,7 @@ begin
   else
     Operation := TDragOperation.Copy;
 
-  ControlHintLabel.Text := 'Over';
+  FClickNotifierHint := 'Over';
   ButtonClickNotifier(Sender);
 end;
 
@@ -458,6 +491,30 @@ begin
   end;
 end;
 
+procedure TFMXStyleDemoForm.Edit2Change(Sender: TObject);
+begin
+  if not FEnableChangeEvents then
+    Exit;
+  FEnableChangeEvents := False;
+  try
+    for var idx := 2 to 8 do
+      (Self.FindComponent('Edit' + idx.ToString) as TEdit).Text := (Sender as TEdit).Text;
+    TimerButtonEdit.Enabled := False;
+    TimerButtonEdit.Enabled := Edit2.Text.Trim = '';
+  finally
+    FEnableChangeEvents := True;
+  end;
+end;
+
+procedure TFMXStyleDemoForm.EditButton1Click(Sender: TObject);
+begin
+  if Sender is TClearEditButton then
+    FClickNotifierHint := 'Clear'
+  else if Sender is TPasswordEditButton then
+    FClickNotifierHint := 'Show';
+  ButtonClickNotifier(Sender);
+end;
+
 procedure TFMXStyleDemoForm.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   FMXStyleOverviewForm.CheckDemoForm.IsChecked := False;
@@ -473,12 +530,25 @@ begin
   PathData.AddRectangle(RectF(0, 0, 100, 100), 0, 0, AllCorners);
   PathLabel1.Data := PathData;
 
+  // TButton with Style
   for var idx := GroupToolButtons.ControlsCount - 1 downto 0 do
     if GroupToolButtons.Controls[idx] is TButton then begin
       var Control := TButton(GroupToolButtons.Controls[idx]);
       Control.Hint := Control.StyleLookup;
     end;
 
+  // TButton with EditButton
+  for var idx := Panel6.ControlsCount - 1 downto 0 do
+    if Panel6.Controls[idx] is TEdit then begin
+      // All, such as TPasswordEditButton, is an TEditButton/TCustomButton,
+      // except for TSpinEditButton, which is onle a TStyledControl.
+      var Control   := TEdit(Panel6.Controls[idx]);
+      var Button    := Control.ButtonsContent.Children[0] as TStyledControl;
+      Control.Hint  := Control.ClassName + ' + ' + Button.ClassName;
+      Button.Hint   := Button.ClassName;
+    end;
+
+  // Animation-Modes
   for var idx := Panel1.ControlsCount - 1 downto 0 do
     if Panel1.Controls[idx] is TSmallScrollBar then begin
       var Control   := TSmallScrollBar(Panel1.Controls[idx]);
@@ -486,6 +556,7 @@ begin
       Control.Hint  := GetEnumName(TypeInfo(TInterpolationType), Ord(Animation.Interpolation));
     end;
 
+  // Splitter
   Panel3.Hint := TSplitter.ClassName;
   Label3.Hint := TSplitter.ClassName;
   for var idx := Panel3.ControlsCount - 1 downto 0 do begin
@@ -493,6 +564,10 @@ begin
     Control.Hint := TSplitter.ClassName;
    end;
 
+  // Click-Notification on Buttons
+  // MouseMove-Event for Magnifying Glass-View
+  // Component Type-Names, for the rest
+  // Enable Hints
   for var idx := ComponentCount - 1 downto 0 do
     if Components[idx] is TControl then begin
       var Control := TControl(Components[idx]);
@@ -508,6 +583,7 @@ begin
         and not (Control = ControlHintPanel)
       then
         Control.Hint := Control.ClassName;
+
       if Control.Hint <> '' then begin
         Control.ShowHint := True;
         if not Control.HitTest then  // Labels
@@ -561,6 +637,28 @@ end;
 procedure TFMXStyleDemoForm.SkLabel1Words5Click(Sender: TObject);
 begin
   ButtonClickNotifier(SkLabel1);
+end;
+
+procedure TFMXStyleDemoForm.SpinEditButton1DownClick(Sender: TObject);
+begin
+  FClickNotifierHint := 'DownClick';
+  ButtonClickNotifier(SpinEditButton1);
+end;
+
+procedure TFMXStyleDemoForm.SpinEditButton1UpClick(Sender: TObject);
+begin
+  FClickNotifierHint := 'UpClick';
+  ButtonClickNotifier(SpinEditButton1);
+end;
+
+procedure TFMXStyleDemoForm.TimerButtonEditTimer(Sender: TObject);
+begin
+  for var idx := 2 to 8 do
+    if (Self.FindComponent('Edit' + idx.ToString) as TEdit).IsFocused then
+      Exit;
+  TimerButtonEdit.Enabled := False;
+  if Edit2.Text.Trim = '' then
+    Edit2.Text := 'Test';  // update Edit3 to Edit8, see Edit2Change
 end;
 
 procedure TFMXStyleDemoForm.TrackBar1Change(Sender: TObject);

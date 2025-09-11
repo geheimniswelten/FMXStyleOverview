@@ -8,7 +8,8 @@ unit FMXStyleOverviewMain;
 interface
 
 uses
-  {Winapi.Windows,} VCL.Dialogs,
+  Winapi.Windows,  // for MessageBeep (inlined from Beep)
+  Vcl.Dialogs,     // for TFileOpenDialog
   (*
   // Default-Styles importieren (aber ist eventuell nicht alles installiert und sowieso nicht im Suchpfad für Platform "Windows")
   // Daher siehe nachfolgend {$R ***.res}
@@ -59,7 +60,8 @@ type
     TabItemCode: TTabItem;
     TabItemTree: TTabItem;
     TabItemPreview: TTabItem;
-    MemoCode: TMemo;
+    MemoPreviewCode: TMemo;
+    LabelPreviewHint: TLabel;
     ButtonLoad: TButton;
     ButtonSave: TButton;
     DropTarget1: TDropTarget;
@@ -186,8 +188,8 @@ procedure TFMXStyleOverviewForm.AddStyleNames(Style: TFmxObject; FileIdx: Intege
 begin
   if Style is TStyleDescription then
     Exit;
-  if Style is TImage then begin
-    FStyleInfos[FileIdx].Images := FStyleInfos[FileIdx].Images + [TImage(Style).StyleName];
+  if (Style is TImage) and (Style.ChildrenCount = 0) then begin
+    FStyleInfos[FileIdx].Images := FStyleInfos[FileIdx].Images + [Style.StyleName];
     Exit;
   end;
 
@@ -238,7 +240,7 @@ procedure TFMXStyleOverviewForm.BuildFolderList;
 begin
   var InitFolder := PopupLoad.ItemsCount;
 
-  for var Version := 55 downto 10 do begin
+  for var Version := 35 downto 10 do begin
     var IDEPath := Format('C:\Users\Public\Documents\Embarcadero\Studio\%d.0\Styles', [Version]);
     if DirectoryExists(IDEPath) then begin
       var MenuItem       := TMenuItem.Create(PopupLoad);
@@ -255,7 +257,7 @@ begin
     MenuItem.TagString := 'C:\Users\Public\Documents\Embarcadero\Studio';
     MenuItem.OnClick   := MenuLoadClick;
   end;
-  for var Version := 55 downto 10 do begin
+  for var Version := 35 downto 10 do begin
     var IDEPath := Format('C:\Program Files (x86)\Embarcadero\Studio\%d.0\Redist\styles\Fmx', [Version]);
     if DirectoryExists(IDEPath) then begin
       var MenuItem       := TMenuItem.Create(PopupLoad);
@@ -323,18 +325,18 @@ begin
       FMXStyleDemoForm.StyleBook := nil;
       FMXStyleDemoForm.StyleName := '';
       FMXStyleDemoForm.Tag       := -1;
-      {}FLockCell.X := DataGrid.ColumnIndex; FLockCell.Y := DataGrid.Row; try
-      {CheckSynchronize;} Application.ProcessMessages;  // Einiges läuft verzögert, z.B. in TStyledControl.KillResourceLink via ForceQueue
-      {}finally FLockCell.X := -1; end;
+      CheckSynchronize;
+//      {}FLockCell.X := DataGrid.ColumnIndex; FLockCell.Y := DataGrid.Row; try
+//      {CheckSynchronize;} Application.ProcessMessages;  // Einiges läuft verzögert, z.B. in TStyledControl.KillResourceLink via ForceQueue
+//      {}finally FLockCell.X := -1; end;
       for var idx := High(FDemoSizes) downto 0 do
         if FMXStyleDemoForm.Components[idx] is TControl then begin
           var Control := TControl(FMXStyleDemoForm.Components[idx]);
           Control.FixedSize  := TSize.Create(0, 0);
-          {}Control.Width    := FDemoSizes[idx].Width + 10;  // kurz ändern, damit die innere Darstellungsgröße neu berechnet wird, oder so?
-          {}Control.Width    := FDemoSizes[idx].Width - 10;  // kurz ändern, damit die innere Darstellungsgröße neu berechnet wird, oder so?
+          {}Control.Width    := FDemoSizes[idx].Width + 5;  // kurz ändern, damit die innere Darstellungsgröße neu berechnet wird, oder so?
           Control.BoundsRect := FDemoSizes[idx];
-          {}Control.InvalidateRect(Control.BoundsRect);
           TButton(Control).Scale.Point := PointF(1, 1);
+          {}Control.InvalidateRect(Control.BoundsRect);
         end;
 
       if (DataGrid.ColumnIndex > 0) and (DataGrid.ColumnIndex < StylesList.Styles.Count) then begin
@@ -351,6 +353,20 @@ begin
         FMXStyleDemoForm.StyleBook := FMXStyleDemoForm.StyleBookDemo;
         FMXStyleDemoForm.Tag       := DataGrid.ColumnIndex;
       end;
+
+      CheckSynchronize;
+      Application.ProcessMessages;
+      for var idx := High(FDemoSizes) downto 0 do
+        if FMXStyleDemoForm.Components[idx] is TControl then begin
+          var Control := TControl(FMXStyleDemoForm.Components[idx]);
+          Control.FixedSize  := TSize.Create(0, 0);
+          {}Control.Width    := FDemoSizes[idx].Width + 2;  // kurz ändern, damit die innere Darstellungsgröße neu berechnet wird, oder so?
+          Control.BoundsRect := FDemoSizes[idx];
+          TButton(Control).Scale.Point := PointF(1, 1);
+          Control.InvalidateRect(Control.BoundsRect);
+          if Control is TPresentedControl then
+            TPresentedControl(Control).ApplyStyleLookup;
+        end;
 
       FMXStyleDemoForm.Button8.ApplyStyleLookup;
       FMXStyleDemoForm.Button16.ApplyStyleLookup;
@@ -461,8 +477,10 @@ begin
 
   DataGrid.OnEnter               := DataGridEnter;  // not public/published
   DataGrid.OnKeyDown             := DataGridKeyDown;
-  MemoCode.Align                 := TAlignLayout.Client;
-  MemoCode.Parent                := nil;  // MemoCode.Hide;
+  LabelPreviewHint.Align         := TAlignLayout.Top;
+  LabelPreviewHint.Parent        := nil;  // LabelPreviewHint.Hide;
+  MemoPreviewCode.Align          := TAlignLayout.Client;
+  MemoPreviewCode.Parent         := nil;  // MemoPreviewCode.Hide;
   MemoDescription.Lines.Clear;
   ExpanderViewOptions.IsExpanded := False;
   TabControlPreview.ActiveTab    := TabItemPreview;
@@ -488,7 +506,7 @@ begin
   try
     BuildFolderList;
     InitGridAndStyleBook;
-    if MessageDlg('Load Default-Styles?', TMsgDlgType.mtConfirmation, [mbYes, mbNo], 0, mbYes) = mrYes then
+    if FMX.Dialogs.MessageDlg('Load Default-Styles?', TMsgDlgType.mtConfirmation, [mbYes, mbNo], 0, mbYes) = mrYes then
       LoadDefaultStyles;
     if not Application.Terminated then
       MenuLoadClick(MenuLoadFolder);
@@ -705,6 +723,7 @@ begin
         Break;
       end;
     end;
+    DataGrid.ScrollToSelectedCell;
     Key := 0;
   end;
 
@@ -762,7 +781,7 @@ begin
   if ACol > 0 then begin
     var Images := '';
     if Assigned(FStyleInfos[ACol].Images) then
-      Images := #10'Images:      ' + string.Join(' ', FStyleInfos[ACol].Images);
+      Images := #10'Images:      ' + string.Join(', ', FStyleInfos[ACol].Images);
     Description := string.Join(#10, FStyleInfos[ACol].Source) + #10#10
                  + FStyleInfos[ACol].Descr + Images;
   end;
@@ -776,10 +795,11 @@ begin
   //ListPlatforms.Enabled := True;
   ListPlatforms.Repaint;
 
+  LabelPreviewHint.Parent := nil;
+  MemoPreviewCode.Parent  := nil;
+  LayoutPreview.DeleteChildren;
   if TabControlPreview.ActiveTab = TabItemCode then begin
-    if not Assigned(MemoCode.Parent) then
-      LayoutPreview.DeleteChildren;
-    MemoCode.Parent := LayoutPreview;  // MemoCode.Show;
+    MemoPreviewCode.Parent := LayoutPreview;  // MemoPreviewCode.Show;
 
     var Style  := StylesList.Styles[ACol].Style.FindStyleResource(FStyleNames[ARow]);
     var Stream := TMemoryStream.Create;
@@ -789,36 +809,33 @@ begin
         Stream.WriteComponentRes(StylesList.Styles[ACol].Platform, Style);
         Stream.Position := 0;
         ObjectResourceToText(Stream, AsText);
-        MemoCode.Text := AsText.DataString;
+        MemoPreviewCode.Text := AsText.DataString;
       end else
-        MemoCode.Text := 'NONE';
+        MemoPreviewCode.Text := 'NONE';
     finally
       AsText.Free;
       Stream.Free;
     end;
 
   end else if TabControlPreview.ActiveTab = TabItemTree then begin
-    if not Assigned(MemoCode.Parent) then
-      LayoutPreview.DeleteChildren;
-    MemoCode.Parent := LayoutPreview;  // MemoCode.Show;
+    MemoPreviewCode.Parent := LayoutPreview;  // MemoPreviewCode.Show;
 
     var Tree := '';
     var Comp := StylesList.Styles[ACol].Style.FindStyleResource(FStyleNames[ARow]);
     IterateComponentTree(Tree, Comp, '');
-    MemoCode.Text := Tree;
+    MemoPreviewCode.Text := Tree;
 
   end else {if TabControlPreview.ActiveTab = TabItemPreview then} begin
-    MemoCode.Parent := nil;  // MemoCode.Hide;
-    LayoutPreview.DeleteChildren;
     if (ACol > 0) and FStyleFound[ARow, ACol] then
       try
         var Style := StylesList.Styles[ACol].Style;
         var Backg := Style.FindStyleResource('backgroundstyle');
         var Back  := TControl(nil);
         if Assigned(Backg) and (CheckBackground.IsChecked or CheckFullBackground.IsChecked) then begin
-          Back        := Backg.Clone(LayoutPreview) as TControl;
-          Back.Align  := TAlignLayout.None;
-          Back.Parent := LayoutPreview;
+          Back         := Backg.Clone(LayoutPreview) as TControl;
+          Back.Align   := TAlignLayout.None;
+          Back.Parent  := LayoutPreview;
+          Back.Visible := True;
         end;
 
         var Compo := Style.FindStyleResource(FStyleNames[ARow]);
@@ -846,6 +863,15 @@ begin
             Comp.Align  := TAlignLayout.Center;
             Comp.Parent := LayoutPreview;
           end;
+
+          if not TControl(Comp).Visible then begin
+            TControl(Comp).Visible := True;
+            LabelPreviewHint.Text   := 'Visible=False';
+            LabelPreviewHint.Parent := LayoutPreview;  // LabelPreviewHint.Show;
+          end;
+        end else begin
+          LabelPreviewHint.Text     := 'NONE';
+          LabelPreviewHint.Parent   := LayoutPreview;  // LabelPreviewHint.Show;
         end;
       except
       end;

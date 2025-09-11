@@ -2,8 +2,8 @@ object FMXStyleOverviewForm: TFMXStyleOverviewForm
   Left = 0
   Top = 0
   Caption = 'FMX-Style-Overview'
-  ClientHeight = 914
-  ClientWidth = 926
+  ClientHeight = 1046
+  ClientWidth = 920
   Position = ScreenCenter
   FormFactor.Width = 320
   FormFactor.Height = 480
@@ -15,8 +15,8 @@ object FMXStyleOverviewForm: TFMXStyleOverviewForm
     Align = Client
     CanFocus = True
     ClipChildren = True
-    Size.Width = 926.000000000000000000
-    Size.Height = 704.000000000000000000
+    Size.Width = 920.000000000000000000
+    Size.Height = 836.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 0
     RowCount = 0
@@ -25,8 +25,8 @@ object FMXStyleOverviewForm: TFMXStyleOverviewForm
     OnSelectCell = DataGridSelectCell
     OnDrawColumnCell = DataGridDrawColumnCell
     OnGetValue = DataGridGetValue
-    Viewport.Width = 922.000000000000000000
-    Viewport.Height = 679.000000000000000000
+    Viewport.Width = 916.000000000000000000
+    Viewport.Height = 811.000000000000000000
   end
   object StylesList: TStyleBook
     Styles = <
@@ -37,8 +37,8 @@ object FMXStyleOverviewForm: TFMXStyleOverviewForm
   end
   object LayoutInfo: TLayout
     Align = MostBottom
-    Position.Y = 712.000000000000000000
-    Size.Width = 926.000000000000000000
+    Position.Y = 844.000000000000000000
+    Size.Width = 920.000000000000000000
     Size.Height = 202.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 5
@@ -47,13 +47,13 @@ object FMXStyleOverviewForm: TFMXStyleOverviewForm
       ClipChildren = True
       Margins.Right = 4.000000000000000000
       Margins.Bottom = 4.000000000000000000
-      Position.X = 437.000000000000000000
+      Position.X = 431.000000000000000000
       Size.Width = 455.000000000000000000
       Size.Height = 198.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 0
       TabStop = False
-      object MemoCode: TMemo
+      object MemoPreviewCode: TMemo
         Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
         DataDetectorTypes = []
         ReadOnly = True
@@ -68,32 +68,38 @@ object FMXStyleOverviewForm: TFMXStyleOverviewForm
         Viewport.Width = 213.000000000000000000
         Viewport.Height = 85.000000000000000000
       end
+      object LabelPreviewHint: TLabel
+        Position.X = 224.000000000000000000
+        Position.Y = 72.000000000000000000
+        Text = 'LabelPreviewHint'
+        TabOrder = 1
+      end
     end
     object SplitterPreview: TSplitter
       Align = Right
       Cursor = crHSplit
       MinSize = 200.000000000000000000
-      Position.X = 429.000000000000000000
+      Position.X = 423.000000000000000000
       Size.Width = 8.000000000000000000
       Size.Height = 202.000000000000000000
       Size.PlatformDefault = False
     end
     object LayoutLeft: TLayout
       Align = Client
-      Size.Width = 429.000000000000000000
+      Size.Width = 423.000000000000000000
       Size.Height = 202.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 1
       object LayoutStyles: TLayout
         Align = Client
         ClipChildren = True
-        Size.Width = 261.000000000000000000
+        Size.Width = 255.000000000000000000
         Size.Height = 202.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 1
         object LayoutSearch: TLayout
           Align = Top
-          Size.Width = 261.000000000000000000
+          Size.Width = 255.000000000000000000
           Size.Height = 25.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 1
@@ -164,19 +170,19 @@ object FMXStyleOverviewForm: TFMXStyleOverviewForm
           StyledSettings = [Size, Style, FontColor]
           TextSettings.Font.Family = 'Consolas'
           Align = Client
-          Size.Width = 261.000000000000000000
+          Size.Width = 255.000000000000000000
           Size.Height = 177.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 0
           TabStop = False
-          Viewport.Width = 257.000000000000000000
+          Viewport.Width = 251.000000000000000000
           Viewport.Height = 173.000000000000000000
         end
       end
       object ListPlatforms: TListBox
         Align = Right
         Margins.Left = 3.000000000000000000
-        Position.X = 264.000000000000000000
+        Position.X = 258.000000000000000000
         Size.Width = 165.000000000000000000
         Size.Height = 202.000000000000000000
         Size.PlatformDefault = False
@@ -202,7 +208,7 @@ object FMXStyleOverviewForm: TFMXStyleOverviewForm
     object LayoutPrevTabs: TLayout
       Align = MostRight
       Margins.Right = 3.000000000000000000
-      Position.X = 896.000000000000000000
+      Position.X = 890.000000000000000000
       Size.Width = 27.000000000000000000
       Size.Height = 202.000000000000000000
       Size.PlatformDefault = False
@@ -278,8 +284,8 @@ object FMXStyleOverviewForm: TFMXStyleOverviewForm
     Align = Bottom
     Cursor = crVSplit
     MinSize = 90.000000000000000000
-    Position.Y = 704.000000000000000000
-    Size.Width = 926.000000000000000000
+    Position.Y = 836.000000000000000000
+    Size.Width = 920.000000000000000000
     Size.Height = 8.000000000000000000
     Size.PlatformDefault = False
   end
