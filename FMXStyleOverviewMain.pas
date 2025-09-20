@@ -3,6 +3,7 @@
 /// <seealso cref="http://geheimniswelten.de">Geheimniswelten</seealso>
 /// <seealso cref="http://geheimniswelten.de/kontakt/#licenses">License Text</seealso>
 /// <seealso cref="https://github.com/geheimniswelten/FMXStyleOverview">GitHub</seealso>
+/// <dependence> h5u.ResFile 1.0 or 2.x </dependence>
 unit FMXStyleOverviewMain;
 
 interface
@@ -23,7 +24,7 @@ uses
   System.Types, System.UITypes, System.SysUtils, System.StrUtils, System.IOUtils, System.ImageList,
   System.Classes, System.Variants, System.Rtti, System.Math, System.Math.Vectors,
   //
-  FMXStyleOverviewDemo, FMXStyleOverviewHelper;
+  FMXStyleOverviewDemo, h5u.ResFile;
 
 type
   TGrid = class(FMX.Grid.TGrid)

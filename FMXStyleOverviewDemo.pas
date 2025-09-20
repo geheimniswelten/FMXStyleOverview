@@ -170,6 +170,10 @@ type
     Button55: TButton;
     Button56: TButton;
     Button57: TButton;
+    Button58: TButton;
+    Button59: TButton;
+    Button60: TButton;
+    Button61: TButton;
     LabelToolButtonScale: TLabel;
     SmallScrollBar2: TSmallScrollBar;
     FloatAnimation1: TFloatAnimation;
@@ -185,8 +189,6 @@ type
     FloatAnimation5: TFloatAnimation;
     SmallScrollBar7: TSmallScrollBar;
     FloatAnimation6: TFloatAnimation;
-    SmallScrollBar9: TSmallScrollBar;
-    FloatAnimation9: TFloatAnimation;
     Panel6: TPanel;
     Edit2: TEdit;
     EditButton1: TEditButton;
@@ -203,6 +205,8 @@ type
     Edit8: TEdit;
     SearchEditButton1: TSearchEditButton;
     TimerButtonEdit: TTimer;
+    Rectangle1: TRectangle;
+    Rectangle2: TRectangle;
     {$ENDREGION}
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);

@@ -1,4 +1,9 @@
-unit FMXStyleOverviewHelper;
+/// <summary> Resource File Reader </summary>
+/// <remarks> Version: 1.0 2025-09-12 <br/> Copyright 2025 himitsu @ geheimniswelten <br/> License: MPL v1.1 , GPL v3.0 or LGPL v3.0 </remarks>
+/// <seealso cref="http://geheimniswelten.de"> Geheimniswelten </seealso>
+/// <seealso cref="http://geheimniswelten.de/kontakt/#licenses"> License Text </seealso>
+/// <seealso cref="https://github.com/geheimniswelten/h5uSingleCollection"> GitHub </seealso>
+unit h5u.ResFile;
 
 interface
 
@@ -68,7 +73,6 @@ type
       function IsEmpty: Boolean;
       class operator Initialize(out Dest: TResource);
     end;
-    {$ENDREGION}
   private
     class function EnumResTypeProc(hModule: HMODULE; lpszType: PChar; lParam: NativeInt): BOOL; stdcall; static;
     class function EnumResNameProc(hModule: HMODULE; lpszType, lpszName: PChar; lParam: NativeInt): BOOL; stdcall; static;
@@ -89,16 +93,20 @@ type
 
     procedure Clear;
     function  ResCount: Integer; inline;
-    function  Add(Resource: TResource): Integer; overload;
-    function  Add(&Type: string;  Name: string;  Data: TBytes; Language: LANGID=$FFFF; Flags: Word=$FFFF): Integer; overload;
-    function  Add(&Type: Integer; Name: string;  Data: TBytes; Language: LANGID=$FFFF; Flags: Word=$FFFF): Integer; overload; inline;
-    function  Add(&Type: Integer; Name: Integer; Data: TBytes; Language: LANGID=$FFFF; Flags: Word=$FFFF): Integer; overload; inline;
+    function  Add    (Resource: TResource): Integer; overload;
+    function  Add    (&Type: string;  Name: string;  Data: TBytes; Language: LANGID=$FFFF; Flags: Word=$FFFF): Integer; overload;
+    function  Add    (&Type: Integer; Name: string;  Data: TBytes; Language: LANGID=$FFFF; Flags: Word=$FFFF): Integer; overload; inline;
+    function  Add    (&Type: Integer; Name: Integer; Data: TBytes; Language: LANGID=$FFFF; Flags: Word=$FFFF): Integer; overload; inline;
+    function  IndexOf(&Type: string;  Name: string;                Language: LANGID=$FFFF; Flags: Word=$FFFF): Integer; overload;
+    function  IndexOf(&Type: string;  Name: Integer;               Language: LANGID=$FFFF; Flags: Word=$FFFF): Integer; overload; inline;
+    function  IndexOf(&Type: Integer; Name: Integer;               Language: LANGID=$FFFF; Flags: Word=$FFFF): Integer; overload; inline;
+    function  IndexOf(Resource: TResource; IgnoreLanguage: Boolean=False): Integer; overload;
     procedure Delete(idx: Integer); inline;
 
     /// <summary>
-    ///   LoadMine läde die Ressourcen der eigenen EXE. <param/>
-    ///   LoadFrom und SaveTo (Stream) läd und speicher in *.res-Dateien. <param/>
-    ///   Und LoadFrom und SaveTo (FileName) verarbeitet *.res, *.exe, *.dll und *.bpl.
+    ///   LoadMine loads the resources of its own EXE. <param/>
+    ///   LoadFrom and SaveTo (Stream) loads and saves in *.res files. <param/>
+    ///   And LoadFrom and SaveTo (FileName) processes *.res, *.exe, *.dll and *.bpl.
     /// </summary>
     procedure LoadMine;
     procedure LoadFrom(FileName: string); overload;
@@ -292,8 +300,8 @@ begin
     if (Index <= Ord(High(cDataTypes))) and (cDataTypes[Char(Index)] <> '') then
       Type_ := cDataTypes[Char(Index)];
   end else begin
-    Index := IndexText(Type_, cDataTypes);
-    if Index >= 0 then
+    SmallInt(Index) := IndexText(Type_, cDataTypes);
+    if SmallInt(Index) >= 0 then
       Type_ := cDataTypes[Char(Index)];
   end;
 
@@ -421,11 +429,13 @@ end;
 
 function TResFile.Add(Resource: TResource): Integer;
 begin
+  Resource.NormalizeTypeAndDefaults;
   if Resource.IsEmpty then
     Exit(-1);
+  if IndexOf(Resource) >= 0 then
+    raise EReadError.CreateRes(@SGenericDuplicateItem);
   Result := Length(Resources);
   Insert(Resource, Resources, Result);
-  Resources[Result].NormalizeTypeAndDefaults;
 end;
 
 function TResFile.Add(&Type, Name: string; Data: TBytes; Language: LANGID; Flags: Word): Integer;
@@ -494,9 +504,9 @@ var
   ResStream:   TResourceStream;
   ResData:     TBytes;
 begin
-  if (lpszType <> nil) and (IntPtr(lpszType) <= MAXWORD) then
+  if (lpszType <> nil) and (UIntPtr(lpszType) <= MAXWORD) then
     Type_ := '#' + IntPtr(lpszType).ToString else Type_ := lpszType;
-  if (lpszName <> nil) and (IntPtr(lpszName) <= MAXWORD) then
+  if (lpszName <> nil) and (UIntPtr(lpszName) <= MAXWORD) then
     Name  := '#' + IntPtr(lpszName).ToString else Name  := lpszName;
 
   if StartsStr('#', Name) then
@@ -524,6 +534,48 @@ class function TResFile.EnumResTypeProc(hModule: HMODULE; lpszType: PChar; lPara
 begin
   if not EnumResourceNames(HInstance, lpszType, @EnumResNameProc, lParam) then
     RaiseLastOSError;
+end;
+
+function TResFile.IndexOf(&Type, Name: Integer; Language: LANGID; Flags: Word): Integer;
+begin
+  Result := IndexOf('#' + &Type.ToString, '#' + Name.ToString, Language, Flags);
+end;
+
+function TResFile.IndexOf(&Type: string; Name: Integer; Language: LANGID; Flags: Word): Integer;
+begin
+  Result := IndexOf(&Type, '#' + Name.ToString, Language, Flags);
+end;
+
+function TResFile.IndexOf(&Type, Name: string; Language: LANGID; Flags: Word): Integer;
+begin
+  var Resource: TResource;
+  Resource.Type_           := &Type;
+  Resource.Name            := Name;
+  Resource.ResVersion.Raw  := 0;
+  Resource.Flags           := Flags;     // $FFFF = ignore
+  Resource.Language.LangID := Language;  // $FFFF = ignore
+  Resource.Version         := DefaultVersion;
+  Resource.Characteristics := DefaultCharacter;
+  Resource.Data            := nil;
+  Result := IndexOf(Resource);
+end;
+
+function TResFile.IndexOf(Resource: TResource; IgnoreLanguage: Boolean): Integer;
+begin
+  Result := -1;
+  Resource.NormalizeTypeAndDefaults;
+  if Resource.IsEmpty then
+    Exit;
+  var ResultMode := 8;
+  for var idx := 0 to High(Resources) do begin
+    Resources[idx].NormalizeTypeAndDefaults;
+    if (Resources[idx].Type_ = Resource.Type_) and (Resources[idx].Name = Resource.Name) then
+      if Resources[idx].Language.FLangID = Resource.Language.FLangID then
+        Exit(idx)
+      else
+        if IgnoreLanguage and (Result < 0) then
+          Result := idx;
+  end;
 end;
 
 class operator TResFile.Initialize(out Dest: TResFile);
@@ -572,7 +624,7 @@ end;
 
 class function TResFile.ResNameToStr(ResName: PChar): string;
 begin
-  if (ResName <> nil) and (IntPtr(ResName) <= MAXWORD) then
+  if (ResName <> nil) and (UIntPtr(ResName) <= MAXWORD) then
     Result := '#' + IntPtr(ResName).ToString
   else
     Result := ResName;
@@ -580,7 +632,7 @@ end;
 
 class function TResFile.ResTypeToStr(ResType: PChar): string;
 begin
-  if (ResType <> nil) and (IntPtr(ResType) <= MAXWORD) then
+  if (ResType <> nil) and (UIntPtr(ResType) <= MAXWORD) then
     if (IntPtr(ResType) <= Ord(High(cDataTypes))) and (cDataTypes[Char(ResType)] <> '') then
       Result := cDataTypes[Char(ResType)]
     else
@@ -613,9 +665,13 @@ begin
   Result  := nil;
   try
     Default(TResource).WriteRecord(Result, Pos);  // empty record as marker for 32 bit resources
-    for var idx := 0 to High(Resources) do
+    for var idx := 0 to High(Resources) do begin
+      Resources[idx].NormalizeTypeAndDefaults;
+      if IndexOf(Resources[idx]) < idx then
+        raise EReadError.CreateRes(@SGenericDuplicateItem);
       if not Resources[idx].IsEmpty then
         Resources[idx].WriteRecord(Result, Pos);
+    end;
   finally
     SetLength(Result, Pos);
   end;
@@ -673,7 +729,7 @@ begin
               if _ResData = nil then
                 DoUpdate := True
               else
-                DoUpdate := (ResSize <> _ResSize) or CompareMem(ResData, _ResData, ResSize);
+                DoUpdate := (ResSize <> Integer(_ResSize)) or CompareMem(ResData, _ResData, ResSize);
             finally
               UnlockResource(HGlobal);
               FreeResource(HGlobal);
@@ -694,3 +750,4 @@ begin
 end;
 
 end.
+

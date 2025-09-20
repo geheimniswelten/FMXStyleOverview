@@ -215,7 +215,7 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="FMXStyleOverviewHelper.pas"/>
+        <DCCReference Include="h5u.ResFile.pas"/>
         <DCCReference Include="FMXStyleOverviewMain.pas">
             <Form>FMXStyleOverviewForm</Form>
             <FormType>fmx</FormType>

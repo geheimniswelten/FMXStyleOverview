@@ -3,7 +3,7 @@ program FMXStyleOverview;
 uses
   System.StartUpCopy,
   FMX.Forms,
-  FMXStyleOverviewHelper in 'FMXStyleOverviewHelper.pas',
+  h5u.ResFile in 'h5u.ResFile.pas',
   FMXStyleOverviewMain in 'FMXStyleOverviewMain.pas' {FMXStyleOverviewForm},
   FMXStyleOverviewDemo in 'FMXStyleOverviewDemo.pas' {FMXStyleDemoForm};
 
