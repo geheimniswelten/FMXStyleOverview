@@ -241,7 +241,7 @@ procedure TFMXStyleOverviewForm.BuildFolderList;
 begin
   var InitFolder := PopupLoad.ItemsCount;
 
-  for var Version := 35 downto 10 do begin
+  for var Version := 66 downto 10 do begin
     var IDEPath := Format('C:\Users\Public\Documents\Embarcadero\Studio\%d.0\Styles', [Version]);
     if DirectoryExists(IDEPath) then begin
       var MenuItem       := TMenuItem.Create(PopupLoad);
@@ -258,7 +258,7 @@ begin
     MenuItem.TagString := 'C:\Users\Public\Documents\Embarcadero\Studio';
     MenuItem.OnClick   := MenuLoadClick;
   end;
-  for var Version := 35 downto 10 do begin
+  for var Version := 66 downto 10 do begin
     var IDEPath := Format('C:\Program Files (x86)\Embarcadero\Studio\%d.0\Redist\styles\Fmx', [Version]);
     if DirectoryExists(IDEPath) then begin
       var MenuItem       := TMenuItem.Create(PopupLoad);
